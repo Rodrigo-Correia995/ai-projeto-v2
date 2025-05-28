@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ProductController;
 use App\Models\Categorie;
@@ -27,6 +28,7 @@ Route::resource('products', ProductController::class);
 Route::resource('categories', CategorieController::class)->parameters([
     'categories' => 'categorie'
 ]);
+Route::get('stock_adjustments', [StockAdjustmentController::class, 'index'])->name('stock_adjustments.index');
 
  
 

@@ -22,6 +22,9 @@
                 <flux:navlist.item icon="tag" :href="route('categories.index')"
                     :current="request()->routeIs('categories.index')"
                     wire:navigate>Categories</flux:navlist.item>
+                <flux:navlist.item icon="tag" :href="route('stock_adjustments.index')"
+                    :current="request()->routeIs('stock_adjustments.index')"
+                    wire:navigate>Stock Adjustments</flux:navlist.item>
             </flux:navlist.group>
 
         </flux:navlist>
