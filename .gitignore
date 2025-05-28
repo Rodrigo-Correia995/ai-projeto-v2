@@ -23,3 +23,7 @@ yarn-error.log
 /.zed
 /vendor
 /database
+composer.json
+composer.lock
+/bootstrap
+/public/vendor
