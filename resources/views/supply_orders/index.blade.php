@@ -1,56 +1,63 @@
-<x-layouts.main-content title="Ordens de Reabastecimento" heading="Reabastecimentos" subheading="Gestão de pedidos de stock">
+<x-layouts.main-content title="Supply Orders" heading="Supply Orders" subheading="Stock Order Management">
 
-<div class="overflow-x-auto">
-    <table class="table w-full text-sm">
-        <thead>
-            <tr>
-                <th>Produto</th>
-                <th>Quantidade</th>
-                <th>Estado</th>
-                <th>Registado por</th>
-                <th>Data</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($supplyOrders as $order)
+    <div class="overflow-x-auto">
+        <table class="table w-full text-sm">
+            <thead>
                 <tr>
-                    <td>{{ $order->product->name }}</td>
-                    <td>{{ $order->quantity }}</td>
-                    <td>
-                        <form method="POST" action="{{ route('supply_orders.updateStatus', $order) }}">
-                            @csrf
-                            @method('PATCH')
-                            <select name="status" onchange="this.form.submit()" class="form-select text-sm">
-                                <option value="requested" {{ $order->status === 'requested' ? 'selected' : '' }}>Pedido</option>
-                                <option value="completed" {{ $order->status === 'completed' ? 'selected' : '' }}>Concluído</option>
-                                <option value="canceled" {{ $order->status === 'canceled' ? 'selected' : '' }}>Cancelado</option>
-                            </select>
-                        </form>
-                    </td>
-                    <td>{{ $order->registeredBy?->name ?? 'N/A' }}</td>
-                    <td>{{ $order->created_at->format('d/m/Y H:i') }}</td>
-                    <td>
-                        @if ($order->status === 'requested')
-                            <form method="POST" action="{{ route('supply_orders.destroy', $order) }}" onsubmit="return confirm('Eliminar esta ordem?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-                            </form>
-                        @else
-                            <span class="text-muted">—</span>
-                        @endif
-                    </td>
+                    <th class="px-4 py-2 text-left">Product</th>
+                    <th class="px-4 py-2 text-left">Quantity</th>
+                    <th class="px-4 py-2 text-left">Status</th>
+                    <th class="px-4 py-2 text-left">Registered By</th>
+                    <th class="px-4 py-2 text-left">Date</th>
+                    <th class="px-4 py-2 text-left">Actions</th>
                 </tr>
-            @empty
-                <tr><td colspan="6" class="text-center">Sem ordens de reabastecimento.</td></tr>
-            @endforelse
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @forelse ($supplyOrders as $order)
+                    <tr class="border-t border-gray-200">
+                        <td class="px-4 py-3">
+                            <div class="flex items-center gap-2">
+                                <span class="font-medium">{{ $order->product->name }}</span>
+                            </div>
+                        </td>
+                        <td class="px-4 py-3">{{ $order->quantity }}</td>
+                        <td class="px-4 py-3 capitalize">{{ $order->status }}</td> <!-- apenas mostra o estado -->
+                        <td class="px-4 py-3">{{ $order->registeredBy?->name ?? 'N/A' }}</td>
+                        <td class="px-4 py-3">{{ $order->created_at->format('d/m/Y H:i') }}</td>
+                        <td class="px-4 py-3">
+                            @if ($order->status === 'requested')
+                                <div class="flex gap-2">
+                                    <!-- Botão para Aprovar -->
+                                    <form method="POST" action="{{ route('supply_orders.updateStatus', $order) }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="status" value="completed">
+                                        <button type="submit" class="btn btn-sm btn-success" title="Approve">Approve</button>
+                                    </form>
 
-<div class="mt-4">
-    {{ $supplyOrders->links() }}
-</div>
+                                    <!-- Botão para Recusar -->
+                                    <form method="POST" action="{{ route('supply_orders.destroy', $order) }}">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="btn btn-sm btn-danger" title="Reject">Reject</button>
+</form>
+                                </div>
+                            @else
+                                <span class="text-muted">—</span>
+                            @endif
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="6" class="text-center py-6 text-gray-500">No supply orders found.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-4">
+        {{ $supplyOrders->links() }}
+    </div>
 
 </x-layouts.main-content>

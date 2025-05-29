@@ -69,7 +69,7 @@
                             <a href="{{ route('supply_orders.create', ['product' => $product->id]) }}"
                                 class="text-sm px-3 py-1 border border-green-600 text-green-600 rounded hover:bg-green-600 hover:text-white transition"
                                 aria-label="Create supply order">
-                                Reabastecer
+                                Supply request
                             </a>
                         </td>
                     </tr>

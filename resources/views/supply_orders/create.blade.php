@@ -2,7 +2,7 @@
     $readonly = false;
 @endphp
 
-<x-layouts.main-content :title="'Novo Reabastecimento'" heading="Criar Reabastecimento" subheading="Adicionar novo registo de reabastecimento">
+<x-layouts.main-content :title="'New Supply Order'" heading="Create Supply Order" subheading="Add a new supply order record">
     <form action="{{ route('supply_orders.store') }}" method="POST" class="flex flex-col gap-6 w-full sm:w-96">
         @csrf
 
@@ -11,7 +11,7 @@
         <div class="w-full sm:w-96">
             <flux:input
                 name="product_name"
-                label="Produto"
+                label="Product"
                 value="{{ $product->name }}"
                 disabled
             />
@@ -21,7 +21,7 @@
             <flux:input
                 type="number"
                 name="quantity"
-                label="Quantidade"
+                label="Quantity"
                 value="{{ old('quantity') }}"
                 min="1"
                 required
@@ -32,25 +32,9 @@
             @enderror
         </div>
 
-        <div class="w-full sm:w-96">
-            <flux:select
-                name="status"
-                label="Estado"
-                :value="old('status', 'requested')"
-                required
-                :disabled="$readonly"
-            >
-                <option value="requested">Pedido</option>
-                <option value="completed">Concluído</option>
-            </flux:select>
-            @error('status')
-                <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-            @enderror
-        </div>
-
         <div class="flex gap-4">
-            <button type="submit" class="btn btn-primary">Criar Ordem</button>
-            <a href="{{ route('products.show', $product->id) }}" class="btn btn-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Create Request</button>
+            <a href="{{ route('products.show', $product->id) }}" class="btn btn-secondary">Cancel</a>
         </div>
     </form>
 </x-layouts.main-content>

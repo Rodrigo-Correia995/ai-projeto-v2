@@ -8,7 +8,7 @@ class SupplyOrderFormRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true; // Podes meter lógica de permissões se quiseres no futuro
+        return true; 
     }
 
     public function rules(): array
@@ -16,7 +16,6 @@ class SupplyOrderFormRequest extends FormRequest
         return [
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
-            'status' => 'required|in:requested,completed',
         ];
     }
 }
