@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SupplyOrderController;
 use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ProductController;
@@ -29,6 +30,9 @@ Route::resource('categories', CategorieController::class)->parameters([
     'categories' => 'categorie'
 ]);
 Route::get('stock_adjustments', [StockAdjustmentController::class, 'index'])->name('stock_adjustments.index');
+Route::resource('supply_orders', SupplyOrderController::class);
+Route::patch('/supply-orders/{supplyOrder}/status', [SupplyOrderController::class, 'updateStatus'])->name('supply_orders.updateStatus');
+
 
  
 

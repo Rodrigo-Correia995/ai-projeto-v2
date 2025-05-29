@@ -45,5 +45,10 @@ class Product extends Model
     {
         return $this->hasMany(StockAdjustment::class);
     }
+
+    public function supplyOrder()
+    {
+        return $this->hasMany(SupplyOrder::class);
+    }
     public $timestamps = false;
 }

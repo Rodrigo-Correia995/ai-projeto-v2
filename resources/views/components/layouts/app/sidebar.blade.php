@@ -25,6 +25,9 @@
                 <flux:navlist.item icon="tag" :href="route('stock_adjustments.index')"
                     :current="request()->routeIs('stock_adjustments.index')"
                     wire:navigate>Stock Adjustments</flux:navlist.item>
+                <flux:navlist.item icon="tag" :href="route('supply_orders.index')"
+                    :current="request()->routeIs('supply_orders.index')"
+                    wire:navigate>Supply orders</flux:navlist.item>
             </flux:navlist.group>
 
         </flux:navlist>
