@@ -31,7 +31,9 @@ class SupplyOrderController extends Controller
     $validated = $request->validated();
 
     $validated['status'] = 'requested';
-    $validated['registered_by_user_id'] = auth()->id();
+    $validated['registered_by_user_id'] = Auth::user()->id;
+
+
 
     $newSupplyOrder = SupplyOrder::create($validated);
 
@@ -47,29 +49,38 @@ class SupplyOrderController extends Controller
 
 
     public function updateStatus(Request $request, SupplyOrder $supplyOrder)
-    {
-        $validated = $request->validate([
-            'status' => 'required|in:requested,completed,canceled',
-        ]);
+{
+    $validated = $request->validate([
+        'status' => 'required|in:requested,completed,canceled',
+    ]);
 
+    // Evita duplicar stock se já estiver 'completed'
+    $wasCompleted = $supplyOrder->status === 'completed';
 
-        $wasCompleted = $supplyOrder->status === 'completed';
+    $product = $supplyOrder->product;
 
-        $supplyOrder->status = $validated['status'];
-        $supplyOrder->save();
+    if (!$wasCompleted && $validated['status'] === 'completed') {
+        $newStock = $product->stock + $supplyOrder->quantity;
 
-    
-        if (!$wasCompleted && $supplyOrder->status === 'completed') {
-            $product = $supplyOrder->product;
-            $product->stock += $supplyOrder->quantity;
-            $product->save();
+        if ($newStock > $product->stock_upper_limit) {
+            return redirect()
+                ->back()
+                ->with('alert-type', 'danger')
+                ->with('alert-msg', "Error: Can´t exceed upper limit stock of({$product->stock_upper_limit}) in the product ({$product->name}).");
         }
 
-        return redirect()
-            ->back()
-            ->with('alert-type', 'success')
-            ->with('alert-msg', 'Estado atualizado com sucesso.');
+        $product->stock = $newStock;
+        $product->save();
     }
+
+    $supplyOrder->status = $validated['status'];
+    $supplyOrder->save();
+
+    return redirect()
+        ->back()
+        ->with('alert-type', 'success')
+        ->with('alert-msg', 'Estado atualizado com sucesso.');
+}
 
     public function destroy(SupplyOrder $supplyOrder)
 {
