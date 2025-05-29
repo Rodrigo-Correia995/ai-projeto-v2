@@ -34,6 +34,26 @@
 </div>
 
 <div class="w-full sm:w-96">
+    <flux:input
+        type="number"
+        name="stock_lower_limit"
+        label="Stock Lower Limit"
+        value="{{ old('stock_lower_limit', $product->stock_lower_limit) }}"
+        :disabled="$readonly"
+    />
+</div>
+
+<div class="w-full sm:w-96">
+    <flux:input
+        type="number"
+        name="stock_upper_limit"
+        label="Stock Upper Limit"
+        value="{{ old('stock_upper_limit', $product->stock_upper_limit) }}"
+        :disabled="$readonly"
+    />
+</div>
+
+<div class="w-full sm:w-96">
     <flux:select
         name="category_id"
         label="Category"
@@ -60,8 +80,3 @@
     >{{ old('description', $product->description) }}</flux:textarea>
 </div>
 
-<flux:error name="name" />
-<flux:error name="price" />
-<flux:error name="stock" />
-<flux:error name="category_id" />
-<flux:error name="description" />

@@ -21,12 +21,27 @@ class Product extends Model
         'stock_upper_limit',
     ];
 
+    public function isBelowMinimumStock(): bool
+    {
+        return isset($this->stock_lower_limit) && $this->stock < $this->stock_lower_limit;
+    }
+
+    public function isAboveMaximumStock(): bool
+    {
+        return isset($this->stock_upper_limit) && $this->stock > $this->stock_upper_limit;
+    }
+
+    public function hasStockAlert(): bool
+    {
+        return $this->isBelowMinimumStock() || $this->isAboveMaximumStock();
+    }
+
     public function category()
     {
         return $this->belongsTo(Categorie::class, 'category_id');
     }
 
-    public function stockAdjustments() 
+    public function stockAdjustments()
     {
         return $this->hasMany(StockAdjustment::class);
     }

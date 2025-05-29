@@ -10,8 +10,6 @@
                         </flux:select.option>
                         @endforeach
                     </flux:select>
-
-
                 </div>
 
                 <div>
@@ -25,6 +23,18 @@
                     <div class="flex-1/2">
                         <flux:input type="number" step="0.01" name="priceMax" label="Max price" class="grow" value="{{ $priceMax }}" />
                     </div>
+                </div>
+
+                <div>
+                    <label class="flex items-center space-x-2 pt-2">
+                        <input
+                            type="checkbox"
+                            name="stockAlertOnly"
+                            value="1"
+                            @checked(request('stockAlertOnly'))
+                            class="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out" />
+                        <span class="text-sm text-gray-700">Show products with problematic stock</span>
+                    </label>
                 </div>
             </div>
 

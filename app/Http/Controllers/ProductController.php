@@ -21,6 +21,7 @@ class ProductController extends Controller
         $filterByCategory = (string)$request->query('category');
         $filterByPriceMin = $request->query('priceMin');
         $filterByPriceMax = $request->query('priceMax');
+        $onlyStockAlerts = $request->query('stockAlertOnly');
 
         $productQuery = Product::query();
 
@@ -40,6 +41,12 @@ class ProductController extends Controller
             $productQuery->where('price', '<=', $filterByPriceMax);
         }
 
+        if ($onlyStockAlerts) {
+            $productQuery->where(function ($query) {
+                $query->whereColumn('stock', '<', 'stock_lower_limit')
+                    ->orWhereColumn('stock', '>', 'stock_upper_limit');
+            });
+        }
         $allProducts = $productQuery->orderBy('name')->paginate(20)->withQueryString();
         $listCategories = [0 => 'Any category'] + Categorie::orderBy('name')->pluck('name', 'id')->toArray();
 
