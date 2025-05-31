@@ -39,6 +39,8 @@ Route::put('/membership_fees', [MembershipFeeController::class, 'update'])->name
 
 Route::resource('shipping_costs', ShippingCostController::class);
     
+Route::get('catalog', [ProductController::class, 'catalog'])->name('products.catalog');
+
 
 
 
