@@ -13,7 +13,7 @@ class StockAdjustmentController extends Controller
 {
     public function index(): View
     {
-        $allStockAdjustments = StockAdjustment::with(['product', 'registeredBy'])->paginate(10);
+        $allStockAdjustments = StockAdjustment::with(['product', 'registeredBy'])->latest()->paginate(10);
         return view('stock_adjustments.index', [
             'stock_adjustments' => $allStockAdjustments
         ]);

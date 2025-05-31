@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class StockAdjustment extends Model
 {
-
+    
     protected $fillable = [
         'product_id',
         'registered_by_user_id',

@@ -28,6 +28,14 @@
                 <flux:navlist.item icon="tag" :href="route('supply_orders.index')"
                     :current="request()->routeIs('supply_orders.index')"
                     wire:navigate>Supply orders</flux:navlist.item>
+                <flux:navlist.item icon="tag" :href="route('membership_fees.edit')"
+                    :current="request()->routeIs('membership_fees.edit')"
+                    wire:navigate>Membership Fee</flux:navlist.item>
+                <flux:navlist.item icon="tag" :href="route('shipping_costs.index')"
+                    :current="request()->routeIs('shipping_costs.index')"
+                    wire:navigate>Shipping Costs</flux:navlist.item>
+                
+
             </flux:navlist.group>
 
         </flux:navlist>
