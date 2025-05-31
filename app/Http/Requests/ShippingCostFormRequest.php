@@ -36,19 +36,19 @@ class ShippingCostFormRequest extends FormRequest
             $max = $this->input('max_value_threshold');
             $id = $this->route('shipping_cost')?->id;
 
-            // Check if min_value_threshold falls inside an existing interval
+            
             $minOverlap = ShippingCost::where('min_value_threshold', '<=', $min)
                 ->where('max_value_threshold', '>=', $min)
                 ->when($id, fn($q) => $q->where('id', '!=', $id))
                 ->exists();
 
-            // Check if max_value_threshold falls inside an existing interval
+            
             $maxOverlap = ShippingCost::where('min_value_threshold', '<=', $max)
                 ->where('max_value_threshold', '>=', $max)
                 ->when($id, fn($q) => $q->where('id', '!=', $id))
                 ->exists();
 
-            // Check if new interval fully encloses an existing one
+            
             $enclosesExisting = ShippingCost::where('min_value_threshold', '>=', $min)
                 ->where('max_value_threshold', '<=', $max)
                 ->when($id, fn($q) => $q->where('id', '!=', $id))
@@ -61,7 +61,7 @@ class ShippingCostFormRequest extends FormRequest
                 $validator->errors()->add('max_value_threshold', 'The maximum value falls within an existing interval.');
             }
             if ($enclosesExisting) {
-                // If the new interval encloses any existing interval, add errors to both fields
+                
                 $validator->errors()->add('min_value_threshold', 'The interval overlaps an existing interval.');
                 $validator->errors()->add('max_value_threshold', 'The interval overlaps an existing interval.');
             }

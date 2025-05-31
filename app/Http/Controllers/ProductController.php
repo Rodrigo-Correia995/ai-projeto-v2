@@ -16,7 +16,7 @@ use App\Http\Requests\ProductFormRequest;
 
 class ProductController extends Controller
 {
-    
+
     public function index(Request $request): View
     {
         $filterByName = $request->query('name');
@@ -60,6 +60,61 @@ class ProductController extends Controller
             'filterByPriceMin',
             'filterByPriceMax',
             'listCategories'
+        ));
+    }
+
+    public function catalog(Request $request): View
+    {
+        // Ler filtros com nomes consistentes e claros
+        $filterByName = $request->query('name');
+        $filterByCategory = (string)$request->query('category');
+        $filterByPriceMin = $request->query('priceMin');
+        $filterByPriceMax = $request->query('priceMax');
+        $onlyStockAlerts = $request->query('stockAlertOnly');
+
+        $catalogQuery = Product::query();
+
+        if ($filterByName) {
+            $catalogQuery->where('name', 'like', '%' . $filterByName . '%');
+        }
+
+        if (!empty($filterByCategory) && $filterByCategory !== '0') {
+            $catalogQuery->where('category_id', $filterByCategory);
+        }
+
+        if (!is_null($filterByPriceMin)) {
+            $catalogQuery->where('price', '>=', $filterByPriceMin);
+        }
+
+        if (!is_null($filterByPriceMax)) {
+            $catalogQuery->where('price', '<=', $filterByPriceMax);
+        }
+
+        if ($onlyStockAlerts) {
+            $catalogQuery->where(function ($query) {
+                $query->whereColumn('stock', '<', 'stock_lower_limit')
+                    ->orWhereColumn('stock', '>', 'stock_upper_limit');
+            });
+        }
+
+        if ($request->has('has_discount') && $request->has_discount == '1') {
+        $catalogQuery->whereNotNull('discount_min_qty')
+                     ->whereNotNull('discount')
+                     ->where('discount', '>', 0);
+    }
+
+        $products = $catalogQuery->orderBy('name')->paginate(12)->withQueryString();
+
+        $listCategories = [0 => 'Any category'] + Categorie::orderBy('name')->pluck('name', 'id')->toArray();
+
+        return view('products.catalog', compact(
+            'products',
+            'listCategories',
+            'filterByCategory',
+            'filterByName',
+            'filterByPriceMin',
+            'filterByPriceMax',
+            'onlyStockAlerts'
         ));
     }
 

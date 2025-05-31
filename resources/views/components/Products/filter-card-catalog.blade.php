@@ -5,9 +5,9 @@
                 <div>
                     <flux:select name="category" label="Category">
                         @foreach ($listCategories as $value => $description)
-                        <flux:select.option value="{{ $value }}" :selected="(string) $category === (string) $value">
-                            {{ $description }}
-                        </flux:select.option>
+                            <flux:select.option value="{{ $value }}" :selected="(string) $category === (string) $value">
+                                {{ $description }}
+                            </flux:select.option>
                         @endforeach
                     </flux:select>
                 </div>
@@ -31,9 +31,22 @@
                             type="checkbox"
                             name="stockAlertOnly"
                             value="1"
-                             @if($stockAlertOnly) checked @endif
+                            @if($stockAlertOnly) checked @endif
                             class="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out" />
                         <span class="text-sm text-gray-700">Show products with problematic stock</span>
+                    </label>
+                </div>
+
+                <!-- Novo filtro para produtos com desconto -->
+                <div>
+                    <label class="flex items-center space-x-2 pt-2">
+                        <input
+                            type="checkbox"
+                            name="has_discount"
+                            value="1"
+                            @if(request()->get('has_discount') == '1') checked @endif
+                            class="form-checkbox h-5 w-5 text-green-600 transition duration-150 ease-in-out" />
+                        <span class="text-sm text-gray-700">Show only products with discount</span>
                     </label>
                 </div>
             </div>

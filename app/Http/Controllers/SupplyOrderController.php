@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class SupplyOrderController extends Controller
 {
-
+    // List all supply orders with pagination
     public function index()
     {
         $supplyOrders = SupplyOrder::with('product', 'registeredBy')->latest()->paginate(10);
@@ -18,6 +18,7 @@ class SupplyOrderController extends Controller
         return view('supply_orders.index', compact('supplyOrders'));
     }
 
+    // Show form to create a supply order for a given product
     public function create(Request $request)
     {
         $productId = $request->query('product');
@@ -26,70 +27,84 @@ class SupplyOrderController extends Controller
         return view('supply_orders.create', compact('product'));
     }
 
-  public function store(SupplyOrderFormRequest $request)
-{
-    $validated = $request->validated();
+    // Store a new supply order with validation for stock upper limit
+    public function store(SupplyOrderFormRequest $request)
+    {
+        $validated = $request->validated();
 
-    $validated['status'] = 'requested';
-    $validated['registered_by_user_id'] = Auth::user()->id;
+        $product = Product::findOrFail($validated['product_id']);
+        $futureStock = $product->stock + $validated['quantity'];
 
+        if ($futureStock > $product->stock_upper_limit) {
+            $htmlMessage = "Error: Restocking would exceed the maximum stock limit of {$product->stock_upper_limit} for the product {$product->name}.";
 
-
-    $newSupplyOrder = SupplyOrder::create($validated);
-
-    $productUrl = route('products.show', $validated['product_id']);
-    $htmlMessage = "Ordem de reabastecimento para o produto <a href='$productUrl'><strong>{$newSupplyOrder->product->name}</strong></a> criada com sucesso!";
-
-    return redirect()
-        ->route('products.index')
-        ->with('alert-type', 'success')
-        ->with('alert-msg', $htmlMessage);
-}
-
-
-
-    public function updateStatus(Request $request, SupplyOrder $supplyOrder)
-{
-    $validated = $request->validate([
-        'status' => 'required|in:requested,completed,canceled',
-    ]);
-
-    // Evita duplicar stock se já estiver 'completed'
-    $wasCompleted = $supplyOrder->status === 'completed';
-
-    $product = $supplyOrder->product;
-
-    if (!$wasCompleted && $validated['status'] === 'completed') {
-        $newStock = $product->stock + $supplyOrder->quantity;
-
-        if ($newStock > $product->stock_upper_limit) {
             return redirect()
-                ->back()
+                ->route('supply_orders.create', ['product' => $product->id])
+                ->withInput()
                 ->with('alert-type', 'danger')
-                ->with('alert-msg', "Error: Can´t exceed upper limit stock of({$product->stock_upper_limit}) in the product ({$product->name}).");
+                ->with('alert-msg', $htmlMessage);
         }
 
-        $product->stock = $newStock;
-        $product->save();
+        $validated['status'] = 'requested';
+        $validated['registered_by_user_id'] = Auth::id();
+
+        SupplyOrder::create($validated);
+
+        $productUrl = route('products.show', $product->id);
+        $htmlMessage = "Supply order for product <a href='$productUrl'><strong>{$product->name}</strong></a> created successfully!";
+
+        return redirect()
+            ->route('products.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', $htmlMessage);
     }
 
-    $supplyOrder->status = $validated['status'];
-    $supplyOrder->save();
+    // Update the status of a supply order, e.g., from 'requested' to 'completed'
+    public function updateStatus(Request $request, SupplyOrder $supplyOrder)
+    {
+        $validated = $request->validate([
+            'status' => 'required|in:requested,completed',
+        ]);
 
-    return redirect()
-        ->back()
-        ->with('alert-type', 'success')
-        ->with('alert-msg', 'Estado atualizado com sucesso.');
-}
+        $wasCompleted = $supplyOrder->status === 'completed';
+        $product = $supplyOrder->product;
 
+        if (!$wasCompleted && $validated['status'] === 'completed') {
+            $newStock = $product->stock + $supplyOrder->quantity;
+
+            if ($newStock > $product->stock_upper_limit) {
+                return redirect()
+                    ->back()
+                    ->with('alert-type', 'danger')
+                    ->with('alert-msg', "Error: Cannot exceed the maximum stock limit of {$product->stock_upper_limit} for the product {$product->name}.");
+            }
+
+            $product->stock = $newStock;
+            $product->save();
+        }
+
+        $supplyOrder->status = $validated['status'];
+        $supplyOrder->save();
+
+        return redirect()
+            ->back()
+            ->with('alert-type', 'success')
+            ->with('alert-msg', 'Status updated successfully.');
+    }
+
+    // Delete a supply order only if it is still in 'requested' status
     public function destroy(SupplyOrder $supplyOrder)
-{
-    if ($supplyOrder->status !== 'requested') {
-        return redirect()->back()->with('alert-type', 'error')->with('alert-msg', 'Only requested orders can be deleted.');
+    {
+        if ($supplyOrder->status !== 'requested') {
+            return redirect()->back()
+                ->with('alert-type', 'error')
+                ->with('alert-msg', 'Only supply orders with status "requested" can be deleted.');
+        }
+
+        $supplyOrder->delete();
+
+        return redirect()->back()
+            ->with('alert-type', 'success')
+            ->with('alert-msg', 'Supply order deleted successfully.');
     }
-
-    $supplyOrder->delete();
-
-    return redirect()->back()->with('alert-type', 'success')->with('alert-msg', 'Order deleted successfully.');
-}
 }

@@ -31,14 +31,14 @@
                 <tbody>
                     @foreach ($allProducts as $product)
                     <tr class="border-b border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <td class="px-4 py-3">{{ $product->name }}</td>
+                       <td class="px-4 py-3 font-semibold">{{ $product->name }}</td>
 
                         <td class="px-4 py-3 text-right hidden sm:table-cell">
                             <span>{{ $product->stock }}</span>
                             @if($product->isBelowMinimumStock())
-                            <span class="text-red-600 font-semibold ml-2">(Below min)</span>
+                            <span class="text-red-600 font-semibold ml-2">(Low stock)</span>
                             @elseif($product->isAboveMaximumStock())
-                            <span class="text-yellow-600 font-semibold ml-2">(Above max)</span>
+                            <span class="text-yellow-600 font-semibold ml-2">(Overstock)</span>
                             @endif
                         </td>
 

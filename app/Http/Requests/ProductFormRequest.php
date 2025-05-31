@@ -19,17 +19,32 @@ class ProductFormRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
-    {
-        return [
-            'name' => 'required|string|max:255',
-            'category_id' => 'required|integer|exists:categories,id',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-            'description' => 'nullable|string|max:1000',
-            'stock_lower_limit' => 'nullable|integer|min:0',
-            'stock_upper_limit' => 'nullable|integer|min:0',
+   public function rules(): array
+{
+    return [
+        'name' => 'required|string|max:255',
+        'category_id' => 'required|integer|exists:categories,id',
+        'price' => 'required|numeric|min:0',
+        'stock' => 'required|integer|min:0',
+        'description' => 'nullable|string|max:1000',
+        'stock_lower_limit' => 'nullable|integer|min:0',
+        'stock_upper_limit' => 'nullable|integer|min:0',
+        'discount_min_qty' => 'nullable|integer|min:1|required_with:discount',
+        'discount' => 'nullable|numeric|min:0|required_with:discount_min_qty',
 
-        ];
+        
+    ];
+}
+
+public function withValidator($validator): void
+    {
+        $validator->after(function ($validator) {
+            $price = $this->input('price');
+            $discount = $this->input('discount');
+
+            if (!is_null($discount) && $discount >= $price) {
+                $validator->errors()->add('discount', 'The discount must be less than the product price.');
+            }
+        });
     }
 }

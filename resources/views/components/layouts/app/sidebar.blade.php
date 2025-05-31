@@ -15,30 +15,40 @@
 
         <flux:navlist variant="outline">
             <flux:navlist.group :heading="__('Platform')" class="grid">
-                <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                <flux:navlist.item icon="tag"
+                    :href="route('products.catalog')"
+                    :current="request()->routeIs('products.catalog')"
+                    wire:navigate>
+                    {{ __('Catalog') }}
+                </flux:navlist.item>
+
                 <flux:navlist.item icon="tag" :href="route('products.index')"
                     :current="request()->routeIs('products.index')"
                     wire:navigate>Products</flux:navlist.item>
+
                 <flux:navlist.item icon="tag" :href="route('categories.index')"
                     :current="request()->routeIs('categories.index')"
                     wire:navigate>Categories</flux:navlist.item>
+
                 <flux:navlist.item icon="tag" :href="route('stock_adjustments.index')"
                     :current="request()->routeIs('stock_adjustments.index')"
                     wire:navigate>Stock Adjustments</flux:navlist.item>
+
                 <flux:navlist.item icon="tag" :href="route('supply_orders.index')"
                     :current="request()->routeIs('supply_orders.index')"
                     wire:navigate>Supply orders</flux:navlist.item>
+
                 <flux:navlist.item icon="tag" :href="route('membership_fees.edit')"
                     :current="request()->routeIs('membership_fees.edit')"
                     wire:navigate>Membership Fee</flux:navlist.item>
+
                 <flux:navlist.item icon="tag" :href="route('shipping_costs.index')"
                     :current="request()->routeIs('shipping_costs.index')"
                     wire:navigate>Shipping Costs</flux:navlist.item>
-                
 
             </flux:navlist.group>
-
         </flux:navlist>
+
 
         <flux:spacer />
 
