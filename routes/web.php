@@ -8,6 +8,7 @@ use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
+use App\Http\Controllers\CardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -43,6 +44,7 @@ Route::get('catalog', [ProductController::class, 'catalog'])->name('products.cat
 
 Route::resource('users', UserController::class);
 
+Route::resource('cards', CardController::class);
 
 
 require __DIR__.'/auth.php';

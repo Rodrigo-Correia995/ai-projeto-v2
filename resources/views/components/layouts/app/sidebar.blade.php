@@ -50,6 +50,10 @@
                         :current="request()->routeIs('users.index')"
                         wire:navigate>Users</flux:navlist.item>
 
+                <flux:navlist.item icon="tag" :href="route('cards.index')"
+                        :current="request()->routeIs('cards.index')"
+                        wire:navigate>Cards</flux:navlist.item>
+
             </flux:navlist.group>
         </flux:navlist>
 
