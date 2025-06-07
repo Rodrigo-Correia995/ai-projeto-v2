@@ -54,7 +54,10 @@
                         :current="request()->routeIs('cards.index')"
                         wire:navigate>Cards</flux:navlist.item>
 
-            </flux:navlist.group>
+                <flux:navlist.item icon="tag" :href="route('operations.index')"
+                    :current="request()->routeIs('operations.index')"
+                    wire:navigate>Operations</flux:navlist.item>
+                </flux:navlist.group>
         </flux:navlist>
 
 

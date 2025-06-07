@@ -9,6 +9,8 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use App\Http\Controllers\CardController;
+use App\Models\Operation;
+use App\Http\Controllers\OperationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -46,5 +48,6 @@ Route::resource('users', UserController::class);
 
 Route::resource('cards', CardController::class);
 
+Route::resource('operations', OperationController::class);
 
 require __DIR__.'/auth.php';
