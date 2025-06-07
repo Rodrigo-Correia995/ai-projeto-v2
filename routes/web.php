@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ShippingCostController;
 use App\Http\Controllers\MembershipFeeController;
 use App\Http\Controllers\SupplyOrderController;
@@ -38,10 +38,10 @@ Route::get('/membership_fees', [MembershipFeeController::class, 'edit'])->name('
 Route::put('/membership_fees', [MembershipFeeController::class, 'update'])->name('membership_fees.update');
 
 Route::resource('shipping_costs', ShippingCostController::class);
-    
+
 Route::get('catalog', [ProductController::class, 'catalog'])->name('products.catalog');
 
-
+Route::resource('users', UserController::class);
 
 
 
