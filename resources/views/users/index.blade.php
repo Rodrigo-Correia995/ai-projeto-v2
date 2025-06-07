@@ -1,4 +1,4 @@
-<x-layouts.app :title="__('Users')">
+<x-layouts.main-content :title="__('Users')" heading="List of Users" subheading="Manage the Users off Grocery Club">
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl ">
         <div class="flex justify-start ">
             <div class="my-4 p-6 ">
@@ -35,12 +35,14 @@
                                 <tr class="border-b border-b-gray-400 dark:border-b-gray-500">
                                     <td class="px-2 py-2 text-left">{{ $user->id }}</td>
                                     <td class="px-2 py-2 text-left">{{ $user->name }}</td>
-                                    <td class="px-2 py-2 text-left hidden sm:table-cell">{{ $user->type }}</td>
+                                    <td class="px-2 py-2 text-left hidden sm:table-cell">{{ $user->email }}</td>
+                                    <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->type }}</td>
+                                    <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->blocked }}</td>
                                     <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->gender }}</td>
                                     <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->photo }}</td>
                                     <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->nif }}</td>
+                                    <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->nif }}</td>
                                     <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->default_delivery_address }}</td>
-                                    <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->default_payment_type }}</td>
                                     <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->default_payment_reference }}</td>
                                     <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->email_verified_at }}</td>
                                     <td class="ps-2 px-0.5">
