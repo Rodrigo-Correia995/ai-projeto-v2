@@ -10,10 +10,32 @@ use Illuminate\Http\RedirectResponse;
 
 class UserController extends Controller
 {
-     public function index(): View
+     public function index(Request $request): View
     {
-        $users = User::paginate(10);
-        return view('users.index')->with('users', $users);
+        $filterById = $request->query('id');
+        $filterByNif = $request->query('nif');
+        $filterByName = $request->query('name');
+
+        $userQuery = User::query();
+
+        if ($filterByName) {
+            $userQuery->where('name', 'like', '%' . $filterByName . '%');
+        }
+        if ($filterById) {
+            $userQuery->where('id', 'like', '%' . $filterById . '%');
+        }
+        if ($filterByNif) {
+            $userQuery->where('nif', 'like', '%' . $filterByNif . '%');
+        }
+
+        $users = $userQuery->orderBy('id')->paginate(20)->withQueryString();
+
+        return view('users.index', compact(
+            'users',
+            'filterByName',
+            'filterById',
+            'filterByNif',
+        ));
     }
 
     public function create(): View
@@ -44,7 +66,7 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
-    public function show(USer $user): View
+    public function show(User $user): View
     {
         return view('users.show')->with('user', $user);
     }
