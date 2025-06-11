@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Operation extends Model
 {
@@ -18,4 +19,14 @@ class Operation extends Model
     ];
 
     public $timestamps = false;
+
+    public function cardRef():BelongsTo
+    {
+        return $this->belongsTo(Card::class, 'card_id', 'id');
+    }
+
+    // public function orderRef()
+    //{
+    //    return $this->belongsTo(Order::class, 'order_id', 'id');
+    //}
 }
