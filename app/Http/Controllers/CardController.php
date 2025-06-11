@@ -17,10 +17,10 @@ class CardController extends Controller
         $cardQuery = Card::query();
 
         if ($filterByCardNumber) {
-            $cardQuery->where('card_number', 'like', '%' . $filterByCardNumber . '%');
+            $cardQuery->where('card_number', $filterByCardNumber);
         }
         if ($filterById) {
-            $cardQuery->where('id', 'like', '%' . $filterById . '%');
+            $cardQuery->where('id', $filterById);
         }
 
         $cards = $cardQuery->orderBy('id')->paginate(10)->withQueryString();

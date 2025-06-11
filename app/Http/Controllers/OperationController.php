@@ -9,10 +9,27 @@ use Illuminate\Http\RedirectResponse;
 
 class OperationController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $operations = Operation::paginate(10);
-        return view('operations.index')->with('operations', $operations);
+        $filterById = $request->query('id');
+        $filterByCardId = $request->query('card_id');
+
+        $operationQuery = Operation::query();
+
+        if ($filterByCardId) {
+            $operationQuery->where('card_id', $filterByCardId);
+        }
+        if ($filterById) {
+            $operationQuery->where('id', $filterById);
+        }
+
+        $operations = $operationQuery->orderBy('id')->paginate(10)->withQueryString();
+
+       return view('operations.index', compact(
+            'operations',
+            'filterByCardId',
+            'filterById',
+        ));
     }
 
     public function create(): View

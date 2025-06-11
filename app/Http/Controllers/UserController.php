@@ -22,10 +22,10 @@ class UserController extends Controller
             $userQuery->where('name', 'like', '%' . $filterByName . '%');
         }
         if ($filterById) {
-            $userQuery->where('id', 'like', '%' . $filterById . '%');
+            $userQuery->where('id', $filterById);
         }
         if ($filterByNif) {
-            $userQuery->where('nif', 'like', '%' . $filterByNif . '%');
+            $userQuery->where('nif', $filterByNif);
         }
 
         $users = $userQuery->orderBy('id')->paginate(20)->withQueryString();

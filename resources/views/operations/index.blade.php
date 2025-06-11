@@ -5,6 +5,14 @@
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
         <div class="flex justify-start">
             <div class="my-4 p-6 max-w-7xl mx-auto w-full">
+                <x-operations.filter-card
+                    :filterAction="route('operations.index')"
+                    :resetUrl="route('operations.index')"
+                    :id="old('id', $filterById)"
+                    :card_id="old('card_id', $filterByCardId)"
+                    class="w-full max-w-lg"
+                    />
+                    <br>
                 <div class="flex items-center gap-4 mb-4">
                     <flux:button variant="primary" href="{{ route('operations.create') }}">
                         Create a new Operation

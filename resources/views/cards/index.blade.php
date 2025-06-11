@@ -9,7 +9,7 @@
                     :filterAction="route('cards.index')"
                     :resetUrl="route('cards.index')"
                     :id="old('id', $filterById)"
-                    :car_number="old('card_number', $filterByCardNumber)"
+                    :card_number="old('card_number', $filterByCardNumber)"
                     class="w-full max-w-lg"
                     />
                     <br>
