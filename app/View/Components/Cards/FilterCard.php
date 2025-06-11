@@ -14,7 +14,6 @@ class FilterCard extends Component
         public string $resetUrl,
         public ?int $id = null,
         public ?int $card_number = null,
-
     ) {}
 
     /**

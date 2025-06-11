@@ -24,8 +24,7 @@ class OperationController extends Controller
         }
 
         $operations = $operationQuery->orderBy('id')->paginate(10)->withQueryString();
-
-       return view('operations.index', compact(
+        return view('operations.index', compact(
             'operations',
             'filterByCardId',
             'filterById',
