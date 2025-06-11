@@ -5,10 +5,12 @@
                     <x-users.filter-card
                     :filterAction="route('users.index')"
                     :resetUrl="route('users.index')"
-                    :id="request('id')"
-                    :nif="request('nif')"
-                    :name="request('name')"
+                    :id="old('id', $filterById)"
+                    :nif="old('nif', $filterByNif)"
+                    :name="old('name', $filterByName)"
+                    class="w-full max-w-lg"
                     />
+                    <br>
                 <div class="flex items-center gap-4 mb-4">
                     <flux:button variant="primary" href="{{ route('users.create') }}">
                         Create a new User

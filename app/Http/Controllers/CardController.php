@@ -9,10 +9,27 @@ use Illuminate\Http\RedirectResponse;
 
 class CardController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $cards = Card::paginate(10);
-        return view('cards.index')->with('cards', $cards);
+        $filterById = $request->query('id');
+        $filterByCardNumber = $request->query('card_number');
+
+        $cardQuery = Card::query();
+
+        if ($filterByCardNumber) {
+            $cardQuery->where('card_number', 'like', '%' . $filterByCardNumber . '%');
+        }
+        if ($filterById) {
+            $cardQuery->where('id', 'like', '%' . $filterById . '%');
+        }
+
+        $cards = $cardQuery->orderBy('id')->paginate(10)->withQueryString();
+
+       return view('cards.index', compact(
+            'cards',
+            'filterByCardNumber',
+            'filterById',
+        ));
     }
 
     public function create(): View
