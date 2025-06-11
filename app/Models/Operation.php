@@ -20,7 +20,7 @@ class Operation extends Model
 
     public $timestamps = false;
 
-    public function cardRef():BelongsTo
+    public function cardRef(): BelongsTo
     {
         return $this->belongsTo(Card::class, 'card_id', 'id');
     }
