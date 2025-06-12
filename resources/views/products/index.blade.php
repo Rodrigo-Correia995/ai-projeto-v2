@@ -14,6 +14,7 @@
                 :name="old('name', request('name'))"
                 :price-min="old('priceMin', request('priceMin'))"
                 :price-max="old('priceMax', request('priceMax'))"
+                :stock-alert-only="old('stockAlertOnly', request('stockAlertOnly'))"
                 class="w-full max-w-lg" />
         </div>
 
@@ -31,19 +32,35 @@
                 <tbody>
                     @foreach ($allProducts as $product)
                     <tr class="border-b border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700">
-                       <td class="px-4 py-3 font-semibold">{{ $product->name }}</td>
+                        <td class="px-4 py-3 font-semibold">{{ $product->name }}</td>
 
                         <td class="px-4 py-3 text-right hidden sm:table-cell">
                             <span>{{ $product->stock }}</span>
-                            @if($product->isBelowMinimumStock())
+                            @if ($product->hasStockAlert())
+                            @if ($product->isBelowMinimumStock())
                             <span class="text-red-600 font-semibold ml-2">(Low stock)</span>
-                            @elseif($product->isAboveMaximumStock())
+                            @elseif ($product->isAboveMaximumStock())
                             <span class="text-yellow-600 font-semibold ml-2">(Overstock)</span>
                             @endif
+                            @endif
+
                         </td>
 
-                        <td class="px-4 py-3 text-right hidden sm:table-cell">
-                            {{ number_format($product->price, 2, ',', '.') }}
+
+                        <td class="px-4 py-3 text-right">
+                            @if ($product->hasDiscount())
+                            <div class="text-sm text-gray-500 line-through">
+                                {{ number_format($product->price, 2, ',', '.') }} €
+                            </div>
+                            <div class="text-lg font-semibold text-green-600">
+                                {{ number_format($product->price - $product->discount, 2, ',', '.') }} €
+                            </div>
+                            <div class="text-xs text-orange-600 mt-1 italic">
+                                -{{ number_format($product->discount, 2, ',', '.') }} € a partir de {{ $product->discount_min_qty }} unidades
+                            </div>
+                            @else
+                            <span>{{ number_format($product->price, 2, ',', '.') }} €</span>
+                            @endif
                         </td>
 
                         <td class="px-4 py-3">{{ $product->category?->name ?? '-' }}</td>

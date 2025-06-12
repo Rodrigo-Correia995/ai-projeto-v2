@@ -23,6 +23,7 @@ class Product extends Model
         'discount',
         'stock_lower_limit',
         'stock_upper_limit',
+        'deleted_at',
     ];
 
     public function isBelowMinimumStock(): bool
@@ -40,6 +41,11 @@ class Product extends Model
         return $this->isBelowMinimumStock() || $this->isAboveMaximumStock();
     }
 
+    public function hasDiscount(): bool
+    {
+        return isset($this->discount_min_qty, $this->discount) && $this->discount > 0;
+    }
+
     public function category()
     {
         return $this->belongsTo(Categorie::class, 'category_id');
@@ -54,5 +60,5 @@ class Product extends Model
     {
         return $this->hasMany(SupplyOrder::class);
     }
-    public $timestamps = false;
+    public $timestamps = true; //Atualiza automaticamente os updated_at, created_at e deleted_at
 }

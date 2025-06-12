@@ -31,11 +31,24 @@
                             type="checkbox"
                             name="stockAlertOnly"
                             value="1"
-                             @if($stockAlertOnly) checked @endif
+                            {{ request()->get('stockAlertOnly') == '1' ? 'checked' : '' }}
                             class="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out" />
                         <span class="text-sm text-gray-700">Show products with problematic stock</span>
                     </label>
                 </div>
+
+                <div>
+                    <label class="flex items-center space-x-2 pt-2">
+                        <input
+                            type="checkbox"
+                            name="has_discount"
+                            value="1"
+                            @if(request()->get('has_discount') == '1') checked @endif
+                            class="form-checkbox h-5 w-5 text-green-600 transition duration-150 ease-in-out" />
+                        <span class="text-sm text-gray-700">Show only products with discount</span>
+                    </label>
+                </div>
+                
             </div>
 
             <div class="grow-0 flex flex-col space-y-3 justify-start">

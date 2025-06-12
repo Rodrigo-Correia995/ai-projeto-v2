@@ -12,10 +12,10 @@ class Categorie extends Model
         'image',
     ];
 
-    public $timestamps = false;
 
     public function productRef(): HasMany
     {
         return $this->hasMany(Product::class, 'category_id', 'id');
     }
+    public $timestamps = false;
 }

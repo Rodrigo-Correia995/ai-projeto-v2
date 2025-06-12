@@ -16,7 +16,7 @@ class StockAdjustment extends Model
 
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class)->withTrashed(); //Mostra produtos que foram apagados com soft delete
     }
 
     public function registeredBy()

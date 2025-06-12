@@ -49,6 +49,13 @@ class ProductController extends Controller
                     ->orWhereColumn('stock', '>', 'stock_upper_limit');
             });
         }
+
+        if ($request->has('has_discount') && $request->has_discount == '1') {
+        $productQuery->whereNotNull('discount_min_qty')
+                     ->whereNotNull('discount')
+                     ->where('discount', '>', 0);
+        }
+
         $allProducts = $productQuery->orderBy('name')->paginate(20)->withQueryString();
         $listCategories = [0 => 'Any category'] + Categorie::orderBy('name')->pluck('name', 'id')->toArray();
 
@@ -59,13 +66,14 @@ class ProductController extends Controller
             'filterByCategory',
             'filterByPriceMin',
             'filterByPriceMax',
-            'listCategories'
+            'listCategories',
+            'onlyStockAlerts'
         ));
     }
 
     public function catalog(Request $request): View
     {
-        // Ler filtros com nomes consistentes e claros
+        
         $filterByName = $request->query('name');
         $filterByCategory = (string)$request->query('category');
         $filterByPriceMin = $request->query('priceMin');
@@ -178,4 +186,10 @@ class ProductController extends Controller
         $categories = Categorie::orderBy('name')->get();
         return view('products.show', compact('product', 'categories'));
     }
+
+    public function trashed(): View
+{
+    $trashedProducts = Product::onlyTrashed()->paginate(20);
+    return view('products.trashed', compact('trashedProducts'));
+}
 }
