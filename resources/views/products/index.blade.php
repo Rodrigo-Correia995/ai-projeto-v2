@@ -71,6 +71,12 @@
                                 aria-label="Create supply order">
                                 Supply request
                             </a>
+                            <form method="POST" action="{{ route('cart.add', ['product' => $product]) }}" class="flex items-center">
+                                @csrf
+                                <button type="submit">
+                                    <flux:icon.shopping-cart class="size-5 hover:text-green-600" />
+                                </button>
+                            </form>
                         </td>
                     </tr>
                     @endforeach

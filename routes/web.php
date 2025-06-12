@@ -6,6 +6,7 @@ use App\Http\Controllers\SupplyOrderController;
 use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -40,6 +41,27 @@ Route::put('/membership_fees', [MembershipFeeController::class, 'update'])->name
 Route::resource('shipping_costs', ShippingCostController::class);
     
 Route::get('catalog', [ProductController::class, 'catalog'])->name('products.catalog');
+
+// CART Related Routes
+// Show the cart:
+Route::get('cart', [CartController::class, 'show'])->name('cart.show');
+
+
+Route::post('cart/{product}', [CartController::class, 'addToCart'])->name('cart.add');
+
+
+Route::delete('cart/{product}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+
+
+Route::put('cart/{product}', [CartController::class, 'updateCart'])->name('cart.update');
+
+
+
+Route::post('cart', [CartController::class, 'confirm'])->name('cart.confirm');
+
+// Clear the cart:
+Route::delete('cart', [CartController::class, 'destroy'])->name('cart.destroy');
+    
 
 
 

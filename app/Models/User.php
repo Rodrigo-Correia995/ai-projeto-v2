@@ -64,4 +64,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(StockAdjustment::class, 'registered_by_user_id');
     }
+
+   
 }
