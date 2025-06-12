@@ -48,7 +48,7 @@ class CartController extends Controller
             $cart['subtotal'] += $item['discounted_price'] * $item['quantity'];
         }
     
-        $cart['shipping'] =  // Valor fixo ou cálculo dinâmico
+        $cart['shipping'] =  5.00;// Valor fixo ou cálculo dinâmico
         $cart['total'] = $cart['subtotal'] + $cart['shipping'];
     }
 
