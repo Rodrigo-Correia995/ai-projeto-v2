@@ -12,6 +12,7 @@ use Livewire\Volt\Volt;
 use App\Http\Controllers\CardController;
 use App\Models\Operation;
 use App\Http\Controllers\OperationController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 Route::get('/', function () {
     return view('welcome');
@@ -64,7 +65,7 @@ Route::post('cart', [CartController::class, 'confirm'])->name('cart.confirm');
 
 // Clear the cart:
 Route::delete('cart', [CartController::class, 'destroy'])->name('cart.destroy');
-    
+
 
 Route::resource('users', UserController::class);
 

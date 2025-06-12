@@ -23,6 +23,11 @@ class VerifyEmailController extends Controller
             $user = $request->user();
 
             event(new Verified($user));
+
+            if ($user->type === 'pending_member') {
+                $user->type = 'member';
+                $user->save();
+            }
         }
 
         return redirect()->intended(route('dashboard', absolute: false).'?verified=1');

@@ -38,6 +38,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
         $validated['password'] = Hash::make($validated['password']);
 
+        $validated['type'] = 'pending_member';
+
         event(new Registered(($user = User::create($validated))));
 
         // Gera número de cartão único de 6 dígitos
