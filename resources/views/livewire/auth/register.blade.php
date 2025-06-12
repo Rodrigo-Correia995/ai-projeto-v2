@@ -51,7 +51,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
         $user->sendEmailVerificationNotification();
 
-        $this->redirectIntended(route('dashboard', absolute: false), navigate: true);
+        $this->redirectIntended(route('home', absolute: false), navigate: true);
 
         $user->cardRef()->create([
             'id' => $user->id,

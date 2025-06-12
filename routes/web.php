@@ -16,9 +16,11 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 
 /*rotas publicas */
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+//Route::get('/', function () {
+//    return view('welcome');
+//})->name('home');
+
+Route::view('/', 'home')->name('home');
 Route::get('catalog', [ProductController::class, 'catalog'])->name('products.catalog');
 
 Route::view('dashboard', 'dashboard')
@@ -36,6 +38,21 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware('auth', 'verified')->group(function () {
+
+Route::middleware('can:admin')->group(function () {
+Route::resource('users', UserController::class);
+
+Route::resource('cards', CardController::class);
+
+Route::resource('operations', OperationController::class);
+
+Route::put('/membership_fees', [MembershipFeeController::class, 'update'])->name('membership_fees.update');
+Route::resource('shipping_costs', ShippingCostController::class);
+Route::get('stock_adjustments', [StockAdjustmentController::class, 'index'])->name('stock_adjustments.index');
+Route::resource('supply_orders', SupplyOrderController::class);
+Route::patch('/supply-orders/{supplyOrder}/status', [SupplyOrderController::class, 'updateStatus'])->name('supply_orders.updateStatus');
+});
+
 Route::resource('products', ProductController::class);
 // CART Related Routes
 // Show the cart:
@@ -58,22 +75,15 @@ Route::post('cart', [CartController::class, 'confirm'])->name('cart.confirm');
 Route::delete('cart', [CartController::class, 'destroy'])->name('cart.destroy');
 
 
-Route::resource('users', UserController::class);
 
-Route::resource('cards', CardController::class);
-
-Route::resource('operations', OperationController::class);
 
 Route::resource('categories', CategorieController::class)->parameters([
     'categories' => 'categorie'
 ]);
-Route::get('stock_adjustments', [StockAdjustmentController::class, 'index'])->name('stock_adjustments.index');
-Route::resource('supply_orders', SupplyOrderController::class);
-Route::patch('/supply-orders/{supplyOrder}/status', [SupplyOrderController::class, 'updateStatus'])->name('supply_orders.updateStatus');
+
 
 //Route::get('/membership_fees', [MembershipFeeController::class, 'edit'])->name('membership_fees.edit');
-Route::put('/membership_fees', [MembershipFeeController::class, 'update'])->name('membership_fees.update');
-Route::resource('shipping_costs', ShippingCostController::class);
+
 });
 
 require __DIR__.'/auth.php';
