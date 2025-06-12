@@ -26,6 +26,7 @@
                                 <th class="px-4 py-3 text-left min-w-[80px]">ID</th>
                                 <th class="px-4 py-3 text-left min-w-[200px]">Number</th>
                                 <th class="px-4 py-3 text-left min-w-[200px]">Balance</th>
+                                <th class="px-4 py-3 text-left min-w-[200px]">Owner</th>
                                 <th class="px-4 py-3 text-left">Options</th>
                             </tr>
                         </thead>
@@ -35,6 +36,7 @@
                                      <td class="px-2 py-2 text-left">{{ $card->id}}</td>
                                     <td class="px-2 py-2 text-left">{{ $card->card_number }}</td>
                                     <td class="px-2 py-2 text-left hidden sm:table-cell">{{ $card->balance }}</td>
+                                    <td class="px-2 py-2 text-left hidden sm:table-cell">{{ $card->userRef->name }}</td>
                                     <td class="px-4 py-3 flex space-x-4">
                                         <a href="{{ route('cards.show', $card) }}">
                                             <flux:icon.eye class="size-5 hover:text-gray-600" />
