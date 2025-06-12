@@ -15,6 +15,7 @@
                 :price-min="old('priceMin', request('priceMin'))"
                 :price-max="old('priceMax', request('priceMax'))"
                 :stock-alert-only="old('stockAlertOnly', request('stockAlertOnly'))"
+                :show-deleted="old('show_deleted', request('show_deleted'))"
                 class="w-full max-w-lg" />
         </div>
 

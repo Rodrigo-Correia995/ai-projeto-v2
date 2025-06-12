@@ -44,11 +44,23 @@
                             name="has_discount"
                             value="1"
                             @if(request()->get('has_discount') == '1') checked @endif
-                            class="form-checkbox h-5 w-5 text-green-600 transition duration-150 ease-in-out" />
+                        class="form-checkbox h-5 w-5 text-green-600 transition duration-150 ease-in-out" />
                         <span class="text-sm text-gray-700">Show only products with discount</span>
                     </label>
                 </div>
-                
+
+                <div>
+                    <label class="flex items-center space-x-2 pt-2">
+                        <input
+                            type="checkbox"
+                            name="show_deleted"
+                            value="1"
+                            {{ request()->get('show_deleted') == '1' ? 'checked' : '' }}
+                            class="form-checkbox h-5 w-5 text-red-600 transition duration-150 ease-in-out" />
+                        <span class="text-sm text-gray-700">Show deleted products (soft deleted)</span>
+                    </label>
+                </div>
+
             </div>
 
             <div class="grow-0 flex flex-col space-y-3 justify-start">

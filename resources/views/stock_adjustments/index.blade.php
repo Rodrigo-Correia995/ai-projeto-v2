@@ -20,7 +20,7 @@
                                     {{ $adjustment->product->name ?? '—' }}
                                 </td>
                                 <td class="px-4 py-2">
-                                    {{ $adjustment->registeredBy->name ?? '—' }}
+                                    {{ $adjustment->registeredBy->name ?? 'N/A' }}
                                 </td>
                                 <td class="px-4 py-2 text-right">
                                     <span class="{{ $adjustment->quantity_changed > 0 ? 'text-green-600' : 'text-red-600' }}">

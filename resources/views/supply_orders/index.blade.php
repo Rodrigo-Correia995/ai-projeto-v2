@@ -16,7 +16,7 @@
                 <tbody>
                     @forelse ($supplyOrders as $supplyOrder)
                     <tr class="border-b border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <td class="px-4 py-3 font-medium">{{ $supplyOrder->product->name }}</td>
+                        <td class="px-4 py-3 font-medium">{{ $supplyOrder->product->name ?? '—'}}</td>
                         <td class="px-4 py-3">{{ $supplyOrder->quantity }}</td>
                         <td class="px-4 py-3 capitalize">{{ $supplyOrder->status }}</td>
                         <td class="px-4 py-3">{{ $supplyOrder->registeredBy?->name ?? 'N/A' }}</td>

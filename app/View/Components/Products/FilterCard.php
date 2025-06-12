@@ -18,8 +18,10 @@ class FilterCard extends Component
         public ?float $priceMin = null,
         public ?float $priceMax = null,
         public ?bool $stockAlertOnly = false,
+        public ?bool $showDeleted = false,
     ) {
         $this->listCategories = $categories;
+        $this->showDeleted = $showDeleted ?? false;
     }
 
     public function render(): View|Closure|string

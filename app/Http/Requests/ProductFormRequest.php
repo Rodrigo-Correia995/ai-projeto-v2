@@ -19,24 +19,24 @@ class ProductFormRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-   public function rules(): array
-{
-    return [
-        'name' => 'required|string|max:255',
-        'category_id' => 'required|integer|exists:categories,id',
-        'price' => 'required|numeric|min:0',
-        'stock' => 'required|integer|min:0',
-        'description' => 'nullable|string|max:1000',
-        'stock_lower_limit' => 'nullable|integer|min:0',
-        'stock_upper_limit' => 'nullable|integer|min:0',
-        'discount_min_qty' => 'nullable|integer|min:1|required_with:discount',
-        'discount' => 'nullable|numeric|min:0|required_with:discount_min_qty',
+    public function rules(): array
+    {
+        return [
+            'name' => 'required|string|max:255',
+            'category_id' => 'required|integer|exists:categories,id',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'description' => 'required|string|max:1000',
+            'stock_lower_limit' => 'required|integer|min:0',
+            'stock_upper_limit' => 'required|integer|min:0|gte:stock_lower_limit',
+            'discount_min_qty' => 'nullable|integer|min:1|required_with:discount',
+            'discount' => 'nullable|numeric|min:0|required_with:discount_min_qty',
 
-        
-    ];
-}
 
-public function withValidator($validator): void
+        ];
+    }
+
+    public function withValidator($validator): void
     {
         $validator->after(function ($validator) {
             $price = $this->input('price');
@@ -47,4 +47,5 @@ public function withValidator($validator): void
             }
         });
     }
+    //Validaçao de que o produto nao pode ter um desconto maior que o seu preço.
 }

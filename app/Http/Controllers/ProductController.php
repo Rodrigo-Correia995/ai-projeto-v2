@@ -24,9 +24,11 @@ class ProductController extends Controller
         $filterByPriceMin = $request->query('priceMin');
         $filterByPriceMax = $request->query('priceMax');
         $onlyStockAlerts = $request->query('stockAlertOnly');
+        $showDeleted = $request->query('show_deleted');
 
         $productQuery = Product::query();
 
+        if ($showDeleted !== '1') {
         if ($filterByName) {
             $productQuery->where('name', 'like', '%' . $filterByName . '%');
         }
@@ -49,11 +51,16 @@ class ProductController extends Controller
                     ->orWhereColumn('stock', '>', 'stock_upper_limit');
             });
         }
+    }
 
         if ($request->has('has_discount') && $request->has_discount == '1') {
         $productQuery->whereNotNull('discount_min_qty')
                      ->whereNotNull('discount')
                      ->where('discount', '>', 0);
+        }
+
+        if ($showDeleted === '1') {
+            $productQuery->onlyTrashed();
         }
 
         $allProducts = $productQuery->orderBy('name')->paginate(20)->withQueryString();
@@ -67,7 +74,8 @@ class ProductController extends Controller
             'filterByPriceMin',
             'filterByPriceMax',
             'listCategories',
-            'onlyStockAlerts'
+            'onlyStockAlerts',
+            'showDeleted'
         ));
     }
 
