@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Operation extends Model
 {
@@ -20,9 +21,9 @@ class Operation extends Model
 
     public $timestamps = false;
 
-    public function cardRef(): BelongsTo
+    public function cardRef(): HasOne
     {
-        return $this->belongsTo(Card::class, 'card_id', 'id');
+        return $this->hasOne(Card::class,'card_id', 'id');
     }
 
     // public function orderRef()
