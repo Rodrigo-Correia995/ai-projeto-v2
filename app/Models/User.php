@@ -24,6 +24,14 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'type',
+        'gender',
+        'photo',
+        'remember_token',
+        'nif',
+        'default_delivery_address',
+        'default_payment_type',
+        'default_payment_reference',
     ];
 
     /**
@@ -65,5 +73,18 @@ class User extends Authenticatable
         return $this->hasMany(StockAdjustment::class, 'registered_by_user_id');
     }
 
-   
+    public function cardRef(): HasOne
+    {
+        return $this->hasOne(Card::class, 'id', 'id');
+    }
+
+    public function supplyOrderRef(): HasMany
+    {
+        return $this->hasMany(SupplyOrder::class, 'registered_by_user_id', 'id');
+    }
+
+   // public function orderRef(): HasMany
+    //{
+     //   return $this->hasMany(Order::class, 'member_id', 'id');
+    //}
 }

@@ -46,7 +46,18 @@
                     :current="request()->routeIs('shipping_costs.index')"
                     wire:navigate>Shipping Costs</flux:navlist.item>
 
-            </flux:navlist.group>
+                    <flux:navlist.item icon="tag" :href="route('users.index')"
+                        :current="request()->routeIs('users.index')"
+                        wire:navigate>Users</flux:navlist.item>
+
+                <flux:navlist.item icon="tag" :href="route('cards.index')"
+                        :current="request()->routeIs('cards.index')"
+                        wire:navigate>Cards</flux:navlist.item>
+
+                <flux:navlist.item icon="tag" :href="route('operations.index')"
+                    :current="request()->routeIs('operations.index')"
+                    wire:navigate>Operations</flux:navlist.item>
+                </flux:navlist.group>
         </flux:navlist>
 
 

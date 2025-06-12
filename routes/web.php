@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ShippingCostController;
 use App\Http\Controllers\MembershipFeeController;
 use App\Http\Controllers\SupplyOrderController;
@@ -9,6 +9,9 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
+use App\Http\Controllers\CardController;
+use App\Models\Operation;
+use App\Http\Controllers\OperationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -39,7 +42,7 @@ Route::get('/membership_fees', [MembershipFeeController::class, 'edit'])->name('
 Route::put('/membership_fees', [MembershipFeeController::class, 'update'])->name('membership_fees.update');
 
 Route::resource('shipping_costs', ShippingCostController::class);
-    
+
 Route::get('catalog', [ProductController::class, 'catalog'])->name('products.catalog');
 
 // CART Related Routes
@@ -63,8 +66,10 @@ Route::post('cart', [CartController::class, 'confirm'])->name('cart.confirm');
 Route::delete('cart', [CartController::class, 'destroy'])->name('cart.destroy');
     
 
+Route::resource('users', UserController::class);
 
+Route::resource('cards', CardController::class);
 
-
+Route::resource('operations', OperationController::class);
 
 require __DIR__.'/auth.php';
