@@ -14,6 +14,9 @@ class Card extends Model
     ];
 
     public $timestamps = false;
+    public $incrementing = false;
+    protected $primaryKey = 'id';
+    protected $keyType = 'int';
 
     public function userRef(): BelongsTo{
 
