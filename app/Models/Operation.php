@@ -28,12 +28,12 @@ class Operation extends Model
     }
 
     public function order()
-    {   
+    {
     return $this->belongsTo(Order::class);
     }
 
-    // public function orderRef()
-    //{
-    //    return $this->belongsTo(Order::class, 'order_id', 'id');
-    //}
+     public function orderRef()
+    {
+        return $this->belongsTo(Order::class, 'order_id', 'id');
+    }
 }

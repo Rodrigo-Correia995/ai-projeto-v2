@@ -51,7 +51,7 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/password', 'settings.password')->name('settings.password');
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
     Route::get('/membership_fees', [MembershipFeeController::class, 'edit'])->name('membership_fees.edit');
-
+    Route::get('/my-card-operations', [OperationController::class, 'myCardOperations'])->name('operations.mycard');
 });
 
 Route::middleware('auth', 'verified')->group(function () {
@@ -89,5 +89,8 @@ Route::resource('categories', CategorieController::class)->parameters([
 //Route::get('/membership_fees', [MembershipFeeController::class, 'edit'])->name('membership_fees.edit');
 
 });
+
+Route::get('/mycard', [CardController::class, 'mycard'])->middleware(['auth'])->name('cards.mycard');
+
 
 require __DIR__.'/auth.php';
