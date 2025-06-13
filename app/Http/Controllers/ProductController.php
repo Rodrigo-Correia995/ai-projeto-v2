@@ -28,7 +28,7 @@ class ProductController extends Controller
 
         $productQuery = Product::query();
 
-        if ($showDeleted !== '1') {
+        
         if ($filterByName) {
             $productQuery->where('name', 'like', '%' . $filterByName . '%');
         }
@@ -51,7 +51,7 @@ class ProductController extends Controller
                     ->orWhereColumn('stock', '>', 'stock_upper_limit');
             });
         }
-    }
+    
 
         if ($request->has('has_discount') && $request->has_discount == '1') {
         $productQuery->whereNotNull('discount_min_qty')
@@ -79,7 +79,7 @@ class ProductController extends Controller
         ));
     }
 
-    public function catalog(Request $request): View
+    public function catalog(Request $request): View  //Isto foi feito a mais por ter interpretado mal o catálogo
     {
         
         $filterByName = $request->query('name');

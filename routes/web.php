@@ -15,6 +15,7 @@ use App\Http\Controllers\OperationController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 
+
 /*rotas publicas */
 //Route::get('/', function () {
 //    return view('welcome');
