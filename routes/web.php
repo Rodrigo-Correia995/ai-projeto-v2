@@ -27,33 +27,8 @@ Route::view('dashboard', 'dashboard')
     ->middleware(['auth'])
     ->name('dashboard');
 
-Route::middleware(['auth'])->group(function () {
-    Route::redirect('settings', 'settings/profile');
-
-    Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
-    Volt::route('settings/password', 'settings.password')->name('settings.password');
-    Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
-    Route::get('/membership_fees', [MembershipFeeController::class, 'edit'])->name('membership_fees.edit');
-
-});
-
-Route::middleware('auth', 'verified')->group(function () {
-
-Route::middleware('can:admin')->group(function () {
-Route::resource('users', UserController::class);
-
-Route::resource('cards', CardController::class);
-
-Route::resource('operations', OperationController::class);
-
-Route::put('/membership_fees', [MembershipFeeController::class, 'update'])->name('membership_fees.update');
-Route::resource('shipping_costs', ShippingCostController::class);
-Route::get('stock_adjustments', [StockAdjustmentController::class, 'index'])->name('stock_adjustments.index');
-Route::resource('supply_orders', SupplyOrderController::class);
-Route::patch('/supply-orders/{supplyOrder}/status', [SupplyOrderController::class, 'updateStatus'])->name('supply_orders.updateStatus');
-});
-
 Route::resource('products', ProductController::class);
+
 // CART Related Routes
 // Show the cart:
 Route::get('cart', [CartController::class, 'show'])->name('cart.show');
@@ -67,7 +42,34 @@ Route::delete('cart/{product}', [CartController::class, 'removeFromCart'])->name
 
 Route::put('cart/{product}', [CartController::class, 'updateCart'])->name('cart.update');
 
+Route::middleware(['auth'])->group(function () {
+    Route::redirect('settings', 'settings/profile');
 
+    Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
+    Volt::route('settings/password', 'settings.password')->name('settings.password');
+    Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
+    Route::get('/membership_fees', [MembershipFeeController::class, 'edit'])->name('membership_fees.edit');
+
+});
+
+Route::middleware('auth', 'verified')->group(function () {
+
+Route::middleware('can:employee')->group(function () {
+Route::resource('users', UserController::class);
+Route::resource('cards', CardController::class);
+Route::get('stock_adjustments', [StockAdjustmentController::class, 'index'])->name('stock_adjustments.index');
+Route::resource('supply_orders', SupplyOrderController::class);
+Route::patch('/supply-orders/{supplyOrder}/status', [SupplyOrderController::class, 'updateStatus'])->name('supply_orders.updateStatus');
+
+});
+
+Route::middleware('can:admin')->group(function () {
+Route::put('/membership_fees', [MembershipFeeController::class, 'update'])->name('membership_fees.update');
+Route::resource('shipping_costs', ShippingCostController::class);
+Route::resource('operations', OperationController::class);
+
+
+});
 
 Route::post('cart', [CartController::class, 'confirm'])->name('cart.confirm');
 

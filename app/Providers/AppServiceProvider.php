@@ -26,5 +26,10 @@ class AppServiceProvider extends ServiceProvider
         // Somente utilizadores com type 'board' são administradores
         return $user->type == 'board';
     });
+
+    Gate::define('employee', function (User $user) {
+        // Somente utilizadores com type 'board' são administradores
+        return $user->type == 'board' || $user->type == 'employee';
+    });
     }
 }
