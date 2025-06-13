@@ -60,13 +60,13 @@ Route::resource('cards', CardController::class);
 Route::get('stock_adjustments', [StockAdjustmentController::class, 'index'])->name('stock_adjustments.index');
 Route::resource('supply_orders', SupplyOrderController::class);
 Route::patch('/supply-orders/{supplyOrder}/status', [SupplyOrderController::class, 'updateStatus'])->name('supply_orders.updateStatus');
-
+Route::resource('operations', OperationController::class);
 });
 
 Route::middleware('can:admin')->group(function () {
 Route::put('/membership_fees', [MembershipFeeController::class, 'update'])->name('membership_fees.update');
 Route::resource('shipping_costs', ShippingCostController::class);
-Route::resource('operations', OperationController::class);
+
 
 
 });

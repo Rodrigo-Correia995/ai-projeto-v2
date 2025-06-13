@@ -88,7 +88,11 @@ new class extends Component {
             <div>
                 <flux:input wire:model="email" :label="__('Email')" type="email" required autocomplete="email" />
                 <br>
+                @can('other')
+
+
                 <flux:input wire:model="nif" :label="__('NIF')" type="text" required autocomplete="nif" />
+                @endcan
                 <br>
                 <div>
                     <label>{{ __('Gender') }}</label>
@@ -104,6 +108,9 @@ new class extends Component {
                     </div>
                 </div>
                 <br>
+                @can('other')
+
+
                 <flux:input wire:model="default_delivery_address" :label="__('Default Delivery Address ')" type="text"
             autofocus autocomplete="default_delivery_address" :placeholder="__('Delivery Address')" />
             <br>
@@ -127,7 +134,7 @@ new class extends Component {
         <br>
         <flux:input wire:model="default_payment_reference" :label="__('Default Paymente Reference ')" type="text"
             autofocus autocomplete="default_payment_reference" :placeholder="__('Paymente Reference')" />
-
+@endcan
                 @if (!auth()->user()->hasVerifiedEmail())
                     <div>
                         <flux:text class="mt-4">
