@@ -26,6 +26,7 @@ Route::get('catalog', [ProductController::class, 'catalog'])->name('products.cat
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth'])
     ->name('dashboard');
+//Route::view('dashboard', 'dashboard')->name('dashboard');
 
 Route::resource('products', ProductController::class);
 

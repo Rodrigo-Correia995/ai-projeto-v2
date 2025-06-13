@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategorieFormRequest;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\Categorie;
@@ -11,7 +12,7 @@ class CategorieController extends Controller
 {
     public function index(): View
     {
-        $allCategories = Categorie::paginate(5); 
+        $allCategories = Categorie::paginate(5);
         return view('categories.index')->with('categories', $allCategories);
     }
 
@@ -21,9 +22,10 @@ class CategorieController extends Controller
         return view('categories.create')->with('categorie', $newCategorie);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(CategorieFormRequest $request): RedirectResponse
     {
-        Categorie::create($request->all());
+        Categorie::create($request->validated());
+        //Categorie::create($request->all());
         return redirect()->route('categories.index');
     }
 
@@ -32,9 +34,10 @@ class CategorieController extends Controller
         return view('categories.edit')->with('categorie', $categorie);
     }
 
-    public function update(Request $request, Categorie $categorie): RedirectResponse
+    public function update(CategorieFormRequest $request, Categorie $categorie): RedirectResponse
     {
-        $categorie->update($request->all());
+        $categorie->update($request->validated());
+        //$categorie->update($request->all());
         return redirect()->route('categories.index');
     }
 
