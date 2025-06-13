@@ -1,23 +1,10 @@
 <x-layouts.main-content :title="__('Operations')"
-    heading="List of Operations"
-    subheading="Manage the available Operations">
+    heading="Minhas Operações do Cartão"
+    subheading="Veja todas as operações relacionadas ao seu cartão">
 
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
         <div class="flex justify-start">
             <div class="my-4 p-6 max-w-7xl mx-auto w-full">
-                <x-operations.filter-card
-                    :filterAction="route('operations.index')"
-                    :resetUrl="route('operations.index')"
-                    :id="old('id', $filterById)"
-                    :card_id="old('card_id', $filterByCardId)"
-                    class="w-full max-w-lg"
-                    />
-                    <br>
-                {{--<div class="flex items-center gap-4 mb-4">
-                    <flux:button variant="primary" href="{{ route('operations.create') }}">
-                        Create a new Operation
-                    </flux:button>
-                </div>--}}
 
                 <div class="my-4 font-base text-sm text-gray-700 dark:text-gray-300 overflow-x-auto">
                     <table class="table-auto border-collapse w-full max-w-7xl mx-auto">
@@ -49,27 +36,23 @@
                                     <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $operation->order_id }}</td>
                                     <td class="px-4 py-3 flex space-x-4">
                                         @can('employee')
-
-
-                                        <a href="{{ route('operations.show', $operation) }}">
-                                            <flux:icon.eye class="size-5 hover:text-gray-600" />
-                                        </a>
+                                            <a href="{{ route('operations.show', $operation) }}">
+                                                <flux:icon.eye class="size-5 hover:text-gray-600" />
+                                            </a>
                                         @endcan
                                         @can('admin')
-
-
-                                        <a href="{{ route('operations.edit', $operation) }}">
-                                            <flux:icon.pencil-square class="size-5 hover:text-blue-600" />
-                                        </a>
-                                        <form method="POST" action="{{ route('operations.destroy', $operation) }}" onsubmit="return confirm('Are you sure?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit">
-                                                <flux:icon.trash class="size-5 hover:text-red-600" />
-                                            </button>
-                                        </form>
+                                            <a href="{{ route('operations.edit', $operation) }}">
+                                                <flux:icon.pencil-square class="size-5 hover:text-blue-600" />
+                                            </a>
+                                            <form method="POST" action="{{ route('operations.destroy', $operation) }}" onsubmit="return confirm('Are you sure?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit">
+                                                    <flux:icon.trash class="size-5 hover:text-red-600" />
+                                                </button>
+                                            </form>
+                                        @endcan
                                     </td>
-                                    @endcan
                                 </tr>
                             @endforeach
                         </tbody>
@@ -79,6 +62,7 @@
                 <div class="mt-4">
                     {{ $operations->links() }}
                 </div>
+
             </div>
         </div>
     </div>

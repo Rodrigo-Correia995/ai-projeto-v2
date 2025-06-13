@@ -10,12 +10,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
-
+    use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
@@ -84,8 +85,16 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(SupplyOrder::class, 'registered_by_user_id', 'id');
     }
 
-   // public function orderRef(): HasMany
-    //{
-     //   return $this->hasMany(Order::class, 'member_id', 'id');
-    //}
+    public function orders()
+    {
+    return $this->hasMany(Order::class, 'member_id');
+    }
+
+
+    public function orderRef(): HasMany
+    {
+        return $this->hasMany(Order::class, 'member_id', 'id');
+    }
+
+    public $timestamps = true;
 }

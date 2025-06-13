@@ -6,6 +6,7 @@ use App\Models\Card;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 class CardController extends Controller
 {
@@ -64,4 +65,14 @@ class CardController extends Controller
     {
         return view('cards.show')->with('card', $card);
     }
+
+ public function mycard()
+{
+    $user = Auth::user();
+
+    $card = $user->cardRef;
+
+    return view('cards.mycard', compact('card'));
+}
+
 }

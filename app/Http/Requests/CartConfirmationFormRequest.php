@@ -3,26 +3,29 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class CartConfirmationFormRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return true;
+        // Permitir membros ou board
+        return Auth::check() && in_array(Auth::user()->type, ['member', 'board']);
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            'products_id' => 'required|exists:students,number'
+            'nif' => ['required', 'digits:9'],
+            'delivery_address' => ['required', 'string', 'min:5'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'nif.required' => 'O NIF é obrigatório.',
+            'nif.digits' => 'O NIF deve ter exatamente 9 dígitos.',
         ];
     }
 }

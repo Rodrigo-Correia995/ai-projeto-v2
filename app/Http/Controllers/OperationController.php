@@ -6,6 +6,7 @@ use App\Models\Operation;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 class OperationController extends Controller
 {
@@ -63,4 +64,18 @@ class OperationController extends Controller
     {
         return view('operations.show')->with('operation', $operation);
     }
+
+    public function myCardOperations()
+{
+    $user = Auth::user();
+
+    $card = $user->cardRef;
+
+    $operations = \App\Models\Operation::where('card_id', $card->id)
+                    ->orderBy('date', 'desc')
+                    ->paginate(10);
+
+    return view('operations.mycard', ['operations' => $operations]);
+}
+
 }

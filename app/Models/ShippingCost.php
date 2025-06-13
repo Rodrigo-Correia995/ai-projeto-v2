@@ -22,6 +22,6 @@ class ShippingCost extends Model
                       ->orWhereNull('max_value_threshold');
             })
             ->orderBy('min_value_threshold', 'desc')
-            ->value('shipping_cost') ?? 0.0;
+            ->value('shipping_cost') ?? 15.0;
     }
 }

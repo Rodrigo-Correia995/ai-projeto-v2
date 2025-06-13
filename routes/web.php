@@ -7,6 +7,7 @@ use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use App\Http\Controllers\CardController;
@@ -27,6 +28,7 @@ Route::get('catalog', [ProductController::class, 'catalog'])->name('products.cat
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth'])
     ->name('dashboard');
+//Route::view('dashboard', 'dashboard')->name('dashboard');
 
 Route::resource('products', ProductController::class);
 
@@ -50,7 +52,7 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/password', 'settings.password')->name('settings.password');
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
     Route::get('/membership_fees', [MembershipFeeController::class, 'edit'])->name('membership_fees.edit');
-
+    Route::get('/my-card-operations', [OperationController::class, 'myCardOperations'])->name('operations.mycard');
 });
 
 Route::middleware('auth', 'verified')->group(function () {
@@ -61,13 +63,13 @@ Route::resource('cards', CardController::class);
 Route::get('stock_adjustments', [StockAdjustmentController::class, 'index'])->name('stock_adjustments.index');
 Route::resource('supply_orders', SupplyOrderController::class);
 Route::patch('/supply-orders/{supplyOrder}/status', [SupplyOrderController::class, 'updateStatus'])->name('supply_orders.updateStatus');
-
+Route::resource('operations', OperationController::class);
 });
 
 Route::middleware('can:admin')->group(function () {
 Route::put('/membership_fees', [MembershipFeeController::class, 'update'])->name('membership_fees.update');
 Route::resource('shipping_costs', ShippingCostController::class);
-Route::resource('operations', OperationController::class);
+
 
 
 });
@@ -89,4 +91,16 @@ Route::resource('categories', CategorieController::class)->parameters([
 
 });
 
+Route::get('/mycard', [CardController::class, 'mycard'])->middleware(['auth'])->name('cards.mycard');
+
+
 require __DIR__.'/auth.php';
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::post('/orders/{order}/complete', [OrderController::class, 'complete'])->name('orders.complete');
+    Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+    Route::get('/orders/{order}/cancel', [OrderController::class, 'showCancelForm'])->name('orders.cancel.form');
+    
+});

@@ -11,11 +11,11 @@
                     class="w-full max-w-lg"
                     />
                     <br>
-                <div class="flex items-center gap-4 mb-4">
+                <!--<div class="flex items-center gap-4 mb-4">
                     <flux:button variant="primary" href="{{ route('users.create') }}">
                         Create a new User
                     </flux:button>
-                </div>
+                </div> -->
                 <div class="my-4 font-base text-sm text-gray-700 dark:text-gray-300">
                     <table class="table-auto border-collapse">
                         <thead>
@@ -55,15 +55,19 @@
                                     <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->default_payment_reference }}</td>
                                     <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->email_verified_at }}</td>
                                     <td class="ps-2 px-0.5">
+                                        @can('employee')
                                         <a href="{{ route('users.show', ['user' => $user]) }}">
                                             <flux:icon.eye class="size-5 hover:text-gray-600" />
                                         </a>
+                                        @endcan
                                     </td>
+                                    @can('admin')
                                     <td class="px-0.5">
                                         <a href="{{ route('users.edit', ['user' => $user]) }}">
                                             <flux:icon.pencil-square class="size-5 hover:text-blue-600" />
                                         </a>
                                     </td>
+
                                     <td class="px-0.5">
                                         <form method="POST"
                                             action="{{ route('users.destroy', ['user' => $user]) }}"
@@ -76,6 +80,7 @@
                                         </form>
                                     </td>
                                 </tr>
+                                @endcan
                             @endforeach
                         </tbody>
                     </table>

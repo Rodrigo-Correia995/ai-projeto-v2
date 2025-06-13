@@ -12,22 +12,28 @@ class Operation extends Model
         'card_id',
         'type',
         'value',
-        'debite_type',
+        'date',
+        'debit_type',
         'credit_type',
         'payment_type',
         'payment_reference',
         'order_id',
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     public function cardRef(): HasOne
     {
         return $this->hasOne(Card::class,'card_id', 'id');
     }
 
-    // public function orderRef()
-    //{
-    //    return $this->belongsTo(Order::class, 'order_id', 'id');
-    //}
+    public function order()
+    {
+    return $this->belongsTo(Order::class);
+    }
+
+     public function orderRef()
+    {
+        return $this->belongsTo(Order::class, 'order_id', 'id');
+    }
 }
