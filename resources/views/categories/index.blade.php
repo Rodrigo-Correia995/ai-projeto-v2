@@ -28,9 +28,16 @@
                                     <td class="px-4 py-3">{{ $category->name }}</td>
                                     <td class="px-4 py-3">{{ $category->image }}</td>
                                     <td class="px-4 py-3 flex space-x-4">
+                                        @can('employee')
+
+
                                         <a href="{{ route('categories.show', $category) }}">
                                             <flux:icon.eye class="size-5 hover:text-gray-600" />
                                         </a>
+                                        @endcan
+                                        @can('admin')
+
+
                                         <a href="{{ route('categories.edit', $category) }}">
                                             <flux:icon.pencil-square class="size-5 hover:text-blue-600" />
                                         </a>
@@ -42,6 +49,7 @@
                                             </button>
                                         </form>
                                     </td>
+                                    @endcan
                                 </tr>
                             @endforeach
                         </tbody>

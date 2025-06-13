@@ -9,7 +9,11 @@ use Livewire\Volt\Component;
 new class extends Component {
     public string $name = '';
     public string $email = '';
-
+    public string $gender = '';
+    public ?string $default_delivery_address = null;
+    public ?string $nif = null;
+    public ?string $default_payment_reference = null;
+    public ?string $default_payment_type = null;
     /**
      * Mount the component.
      */
@@ -17,6 +21,12 @@ new class extends Component {
     {
         $this->name = Auth::user()->name;
         $this->email = Auth::user()->email;
+        $this->email = Auth::user()->email;
+        $this->gender = Auth::user()->gender ?? '';
+        $this->default_delivery_address = Auth::user()->default_delivery_address;
+        $this->nif = Auth::user()->nif;
+        $this->default_payment_reference = Auth::user()->default_payment_reference;
+        $this->default_payment_type = Auth::user()->default_payment_type;
     }
 
     /**
@@ -29,14 +39,13 @@ new class extends Component {
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
 
-            'email' => [
-                'required',
-                'string',
-                'lowercase',
-                'email',
-                'max:255',
-                Rule::unique(User::class)->ignore($user->id)
-            ],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
+
+            'gender' => ['required', 'in:M,F'],
+            'default_delivery_address' => ['nullable', 'string', 'max:255'],
+            'nif' => ['nullable', 'string', 'max:9'],
+            'default_payment_reference' => ['nullable', 'string', 'max:255'],
+            'default_payment_type' => ['nullable', 'in:Visa,MB WAY,PayPal'],
         ]);
 
         $user->fill($validated);
@@ -58,7 +67,7 @@ new class extends Component {
         $user = Auth::user();
 
         if ($user->hasVerifiedEmail()) {
-            $this->redirectIntended(default: route('dashboard', absolute: false));
+            $this->redirectIntended(default: route('home', absolute: false));
 
             return;
         }
@@ -78,13 +87,61 @@ new class extends Component {
 
             <div>
                 <flux:input wire:model="email" :label="__('Email')" type="email" required autocomplete="email" />
+                <br>
+                @can('other')
 
-                @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail &&! auth()->user()->hasVerifiedEmail())
+
+                <flux:input wire:model="nif" :label="__('NIF')" type="text" required autocomplete="nif" />
+                @endcan
+                <br>
+                <div>
+                    <label>{{ __('Gender') }}</label>
+                    <div class="mt-1">
+                        <label>
+                            <input type="radio" wire:model="gender" name="gender" value="M">
+                            {{ __('M') }}
+                        </label>
+                        <label class="ml-4">
+                            <input type="radio" wire:model="gender" name="gender" value="F">
+                            {{ __('F') }}
+                        </label>
+                    </div>
+                </div>
+                <br>
+                @can('other')
+
+
+                <flux:input wire:model="default_delivery_address" :label="__('Default Delivery Address ')" type="text"
+            autofocus autocomplete="default_delivery_address" :placeholder="__('Delivery Address')" />
+            <br>
+            <div>
+            <label>{{ __('Default Payment Type') }}</label>
+            <div class="mt-1">
+                <label>
+                    <input type="radio" wire:model="default_payment_type" name="default_payment_type" value="Visa">
+                    {{ __('Visa') }}
+                </label>
+                <label class="ml-4">
+                    <input type="radio" wire:model="default_payment_type" name="default_payment_type" value="PayPal">
+                    {{ __('PayPal') }}
+                </label>
+                <label class="ml-4">
+                    <input type="radio" wire:model="default_payment_type" name="default_payment_type" value="MB WAY">
+                    {{ __('MB WAY') }}
+                </label>
+            </div>
+        </div>
+        <br>
+        <flux:input wire:model="default_payment_reference" :label="__('Default Paymente Reference ')" type="text"
+            autofocus autocomplete="default_payment_reference" :placeholder="__('Paymente Reference')" />
+@endcan
+                @if (!auth()->user()->hasVerifiedEmail())
                     <div>
                         <flux:text class="mt-4">
                             {{ __('Your email address is unverified.') }}
 
-                            <flux:link class="text-sm cursor-pointer" wire:click.prevent="resendVerificationNotification">
+                            <flux:link class="text-sm cursor-pointer"
+                                wire:click.prevent="resendVerificationNotification">
                                 {{ __('Click here to re-send the verification email.') }}
                             </flux:link>
                         </flux:text>

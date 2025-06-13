@@ -20,7 +20,7 @@ class Operation extends Model
         'order_id',
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     public function cardRef(): HasOne
     {

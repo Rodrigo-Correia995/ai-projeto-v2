@@ -13,16 +13,19 @@ class Card extends Model
         'balance',
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;
+    public $incrementing = false;
+    protected $primaryKey = 'id';
+    protected $keyType = 'int';
 
     public function userRef(): BelongsTo{
 
-        return $this->belongsTo(User::class, 'id', 'id');
+        return $this->belongsTo(User::class, 'id', 'id')->withTrashed();
 
     }
 
      public function operationsRef(): HasMany
     {
-        return $this->hasMany(Operation::class, 'card_id', 'id');
+        return $this->hasMany(Operation::class, 'card_id', 'id')->withTrashed();
     }
 }

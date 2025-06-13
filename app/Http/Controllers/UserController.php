@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
-
+use App\Http\Requests\UserFormRequest;
 
 class UserController extends Controller
 {
@@ -54,9 +54,10 @@ class UserController extends Controller
     {
         return view('users.edit')->with('user', $user);
     }
-    public function update(Request $request, User $user): RedirectResponse
+    public function update(UserFormRequest $request, User $user): RedirectResponse
     {
-        $user->update($request->all());
+        $user->update($request->validated());
+        //$user->update($request->all());
         return redirect()->route('users.index');
     }
 
