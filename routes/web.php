@@ -7,6 +7,7 @@ use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use App\Http\Controllers\CardController;
@@ -91,3 +92,12 @@ Route::resource('categories', CategorieController::class)->parameters([
 });
 
 require __DIR__.'/auth.php';
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::post('/orders/{order}/complete', [OrderController::class, 'complete'])->name('orders.complete');
+    Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+    Route::get('/orders/{order}/cancel', [OrderController::class, 'showCancelForm'])->name('orders.cancel.form');
+    
+});

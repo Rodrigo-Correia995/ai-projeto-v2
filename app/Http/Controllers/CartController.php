@@ -167,6 +167,7 @@ class CartController extends Controller
         if (!in_array($user->type, ['member', 'board']) ) {
             return back()->with('alert-msg', "Apenas membros podem concluir compras.")
         ->with('alert-type', 'danger');
+        
         }
         
 
