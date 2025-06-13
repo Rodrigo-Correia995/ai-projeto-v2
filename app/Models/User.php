@@ -83,6 +83,11 @@ class User extends Authenticatable
         return $this->hasMany(SupplyOrder::class, 'registered_by_user_id', 'id');
     }
 
+    public function orders()
+    {
+    return $this->hasMany(Order::class, 'member_id');
+    }
+
    // public function orderRef(): HasMany
     //{
      //   return $this->hasMany(Order::class, 'member_id', 'id');

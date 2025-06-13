@@ -21,6 +21,8 @@ class CategorieController extends Controller
         return view('categories.create')->with('categorie', $newCategorie);
     }
 
+    
+
     public function store(Request $request): RedirectResponse
     {
         Categorie::create($request->all());
