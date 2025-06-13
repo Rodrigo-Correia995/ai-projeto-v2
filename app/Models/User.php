@@ -90,11 +90,11 @@ class User extends Authenticatable implements MustVerifyEmail
     return $this->hasMany(Order::class, 'member_id');
     }
 
-   // public function orderRef(): HasMany
-    //public function orderRef(): HasMany
-    //{
-    //    return $this->hasMany(Order::class, 'member_id', 'id');
-    //}
+
+    public function orderRef(): HasMany
+    {
+        return $this->hasMany(Order::class, 'member_id', 'id');
+    }
 
     public $timestamps = true;
 }
