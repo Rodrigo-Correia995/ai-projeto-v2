@@ -33,16 +33,16 @@
                 <td class="px-3 py-2">{{ $order->date }}</td>
                 <td class="px-3 py-2 space-x-2">
                     @if($order->status === 'pending')
-                        <form action="{{ route('orders.complete', $order) }}" method="POST" class="inline">
+                        <form action="{{ route('orders.complete', $order) }}" method="POST" class="inline-block">
                             @csrf
-                            <button class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600" 
-                                onclick="return confirm('Completar esta encomenda?')">
+                            <button type="submit" class="inline-block bg-green-500 text-white text-sm font-semibold px-4 py-2 rounded hover:bg-green-600">
                                 Completar
                             </button>
                         </form>
+
                         <a href="{{ route('orders.cancel.form', $order) }}"
-                        class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
-                            Cancelar
+                            class="inline-block bg-red-500 text-white text-sm font-semibold px-4 py-2 rounded hover:bg-red-600 ml-2">
+                                Cancelar
                         </a>
                     @else
                         <span class="text-gray-500">-</span>
@@ -52,6 +52,10 @@
             @endforeach
         </tbody>
     </table>
+</div>
+
+<div class="mt-4">
+    {{ $orders->links() }}
 </div>
 
 </x-layouts.main-content>

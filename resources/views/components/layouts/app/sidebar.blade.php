@@ -71,8 +71,22 @@
                     :current="request()->routeIs('operations.mycard')"
                     wire:navigate>MyOperations</flux:navlist.item>
 
+                <flux:navlist.item icon="tag" :href="route('cart.show')"
+                    :current="request()->routeIs('cart.show')"
+                    wire:navigate>Cart</flux:navlist.item>
+
+                <flux:navlist.item icon="tag" :href="route('orders.index')"
+                    :current="request()->routeIs('orders.index')"
+                    wire:navigate>Orders</flux:navlist.item>
+
+                
+            
+
+
 
                 </flux:navlist.group>
+
+
 
 
 

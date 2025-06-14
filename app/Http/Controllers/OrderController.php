@@ -5,16 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Operation;
 use App\Models\Product;
+use App\Mail\OrderCompletedMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+
 
 class OrderController extends Controller
 {
         public function index()
     {
         
-        $orders = Order::with('member')->orderBy('date', 'desc')->get();
+         $orders = Order::with('member')  // Eager load para evitar N+1
+                    ->latest()
+                    ->paginate(20); //20  por página
+        
         return view('orders.index', compact('orders'));
     }
 
@@ -45,9 +53,23 @@ class OrderController extends Controller
             $order->status = 'completed';
             $order->save();
 
-            // PDF + Email vêm depois
+            
         });
+        $pdf = Pdf::loadView('orders.receipt', ['order' => $order]);
+        $fileName = $order->id . '_receipt.pdf';
+        $filePath = 'receipts/' . $fileName;
 
+        // Guardar PDF
+        Storage::disk('public')->put($filePath, $pdf->output());
+
+        // Guardar caminho na base de dados
+        $order->pdf_receipt = $fileName;
+        $order->save();
+
+        // Enviar email com PDF em anexo
+        Mail::to($order->member->email)->send(new OrderCompletedMail($order));
+
+        
         return back()->with('alert-msg', "Encomenda completada com sucesso!")
                         ->with('alert-type', 'success');
     }
