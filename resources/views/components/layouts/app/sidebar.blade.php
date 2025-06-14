@@ -25,6 +25,10 @@
                 <flux:navlist.item icon="tag" :href="route('products.index')"
                     :current="request()->routeIs('products.index')"
                     wire:navigate>Products</flux:navlist.item>
+
+                <flux:navlist.item icon="tag" :href="route('cart.show')"
+                    :current="request()->routeIs('cart.show')"
+                    wire:navigate>Cart</flux:navlist.item>
                 @auth
                 <flux:navlist.item icon="tag" :href="route('categories.index')"
                     :current="request()->routeIs('categories.index')"
@@ -71,16 +75,16 @@
                     :current="request()->routeIs('operations.mycard')"
                     wire:navigate>MyOperations</flux:navlist.item>
 
-                <flux:navlist.item icon="tag" :href="route('cart.show')"
-                    :current="request()->routeIs('cart.show')"
-                    wire:navigate>Cart</flux:navlist.item>
+
+@can('employee')
+
 
                 <flux:navlist.item icon="tag" :href="route('orders.index')"
                     :current="request()->routeIs('orders.index')"
                     wire:navigate>Orders</flux:navlist.item>
+@endcan
 
-                
-            
+
 
 
                 <flux:navlist.item icon="chart-bar" :href="route('statistics.index')" :current="request()->routeIs('statistics.index')" wire:navigate>

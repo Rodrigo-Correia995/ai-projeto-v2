@@ -31,6 +31,9 @@
                 <td class="px-3 py-2">{{ ucfirst($order->status) }}</td>
                 <td class="px-3 py-2">{{ number_format($order->total, 2) }}€</td>
                 <td class="px-3 py-2">{{ $order->date }}</td>
+                @can('admin')
+
+
                 <td class="px-3 py-2 space-x-2">
                     @if($order->status === 'pending')
                         <form action="{{ route('orders.complete', $order) }}" method="POST" class="inline-block">
@@ -44,6 +47,7 @@
                             class="inline-block bg-red-500 text-white text-sm font-semibold px-4 py-2 rounded hover:bg-red-600 ml-2">
                                 Cancelar
                         </a>
+                        @endcan
                     @else
                         <span class="text-gray-500">-</span>
                     @endif
