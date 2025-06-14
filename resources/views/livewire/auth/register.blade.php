@@ -42,7 +42,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
         event(new Registered(($user = User::create($validated))));
 
-        // Gera número de cartão único de 6 dígitos
+        // Gera número de cartão
         do {
             $cardNumber = random_int(100000, 999999);
         } while (Card::where('card_number', $cardNumber)->exists());
