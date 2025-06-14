@@ -22,6 +22,6 @@ class OrderCompletedMail extends Mailable
     {
         return $this->subject('Fatura da Encomenda #' . $this->order->id)
                     ->markdown('emails.order_receipt')
-                    ->attach(storage_path('app/public/' . $this->order->pdf_receipt));
+                    ->attach(storage_path('app/public/receipts/' . $this->order->pdf_receipt));
     }
 }
