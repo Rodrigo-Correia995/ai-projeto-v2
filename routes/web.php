@@ -14,8 +14,7 @@ use App\Http\Controllers\CardController;
 use App\Models\Operation;
 use App\Http\Controllers\OperationController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-
-
+use App\Http\Controllers\StatisticsController;
 
 /*rotas publicas */
 //Route::get('/', function () {
@@ -105,3 +104,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/orders/{order}/cancel', [OrderController::class, 'showCancelForm'])->name('orders.cancel.form');
 
 });
+
+Route::get('/statistics', [StatisticsController::class, 'index'])
+    ->name('statistics.index')
+    ->middleware('auth');

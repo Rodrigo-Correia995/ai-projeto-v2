@@ -45,7 +45,7 @@ class SupplyOrderController extends Controller
                 ->with('alert-type', 'danger')
                 ->with('alert-msg', $htmlMessage);
         }
-
+        
         $validated['status'] = 'requested';
         $validated['registered_by_user_id'] = Auth::id();
 

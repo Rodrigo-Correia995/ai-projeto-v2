@@ -21,6 +21,9 @@ class Order extends Model
         'cancel_reason',
         'custom',
     ];
+    protected $casts = [
+        'date' => 'datetime',
+    ];
 
     public function member()
     {

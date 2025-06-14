@@ -60,7 +60,7 @@
                                 {{ number_format($product->price - $product->discount, 2, ',', '.') }} €
                             </div>
                             <div class="text-xs text-orange-600 mt-1 italic">
-                                -{{ number_format($product->discount, 2, ',', '.') }} € a partir de {{ $product->discount_min_qty }} unidades
+                                -{{ number_format($product->discount, 2, ',', '.') }} € beggining in {{ $product->discount_min_qty }} units
                             </div>
                             @else
                             <span>{{ number_format($product->price, 2, ',', '.') }} €</span>
