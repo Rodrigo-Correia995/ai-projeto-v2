@@ -93,6 +93,7 @@ Route::resource('categories', CategorieController::class)->parameters([
 
 Route::get('/mycard', [CardController::class, 'mycard'])->middleware(['auth'])->name('cards.mycard');
 
+Route::post('/mycard/charge', [CardController::class, 'charge'])->name('cards.charge')->middleware('auth');
 
 require __DIR__.'/auth.php';
 
@@ -102,5 +103,5 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/orders/{order}/complete', [OrderController::class, 'complete'])->name('orders.complete');
     Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
     Route::get('/orders/{order}/cancel', [OrderController::class, 'showCancelForm'])->name('orders.cancel.form');
-    
+
 });

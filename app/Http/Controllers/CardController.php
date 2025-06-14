@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Payment;
+use App\Models\Operation;
+use App\Models\Order;
 
 class CardController extends Controller
 {
@@ -73,6 +76,47 @@ class CardController extends Controller
     $card = $user->cardRef;
 
     return view('cards.mycard', compact('card'));
+}
+
+public function charge(Request $request): RedirectResponse
+{
+    $request->validate([
+        'amount' => 'required|numeric|min:0.01',
+        'cvc_code' => 'nullable|digits:3'
+    ]);
+
+    $user = Auth::user();
+    $card = $user->cardRef;
+
+    $method = $user->default_payment_type;
+    $data = $user->default_payment_reference;
+    $cvc = $request->cvc_code;
+
+    // Validar o pagamento 
+    $isValid = match ($method) {
+        'Visa' => Payment::payWithVisa($data, $cvc),
+        'PayPal' => Payment::payWithPaypal($data),
+        'MB WAY' => Payment::payWithMBway($data),
+        default => false,
+    };
+
+    if (!$isValid) {
+        return back()->withErrors(['payment' => 'Método de pagamento inválido. Ou não predefinido']);
+    }
+
+    // Atualiza balance
+    $card->balance += $request->amount;
+    $card->save();
+
+    Operation::create([
+                'card_id'           => $card->id,
+                'type'              => 'credit',
+                'value'            => $request->amount,
+                'date'              => now(),
+                'credit_type'       => 'payment',
+           ]);
+
+    return back()->with('success', 'Cartão carregado com sucesso!');
 }
 
 }

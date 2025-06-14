@@ -1,6 +1,4 @@
-<x-layouts.main-content :title="__('Card')"
-    heading="Your Card"
-    subheading="View the details of your card">
+<x-layouts.main-content :title="__('Card')" heading="Your Card" subheading="View the details of your card">
 
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
         <div class="flex justify-start">
@@ -22,7 +20,7 @@
                                 <td class="px-2 py-2 text-left">{{ $card->id }}</td>
                                 <td class="px-2 py-2 text-left">{{ $card->card_number }}</td>
                                 <td class="px-2 py-2 text-left">{{ $card->balance }}</td>
-                                <td class="px-2 py-2 text-left hidden sm:table-cell">{{ $card->userRef->name }}</td>
+
                                 <td class="px-4 py-3">
                                     <a href="{{ route('cards.show', $card) }}">
                                         <flux:icon.eye class="size-5 hover:text-gray-600" />
@@ -35,5 +33,39 @@
 
             </div>
         </div>
+
+        @if ($errors->any())
+            <div style="color: red;">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{ route('cards.charge') }}" method="POST">
+            @csrf
+
+            <div style="margin: 20px;">
+                <label for="amount" style="display: block; margin-bottom: 5px;">Valor a carregar (€):</label>
+
+                <input type="number" name="amount" id="amount" required
+                    style="border: 1px solid #000; padding: 8px; width: 200px; border-radius: 4px; display: block;">
+            </div>
+
+
+            @if (Auth::user()->default_payment_type === 'Visa')
+                <div id="cvc-container">
+                    <label for="cvc_code">CVC:</label>
+                    <input type="number" name="cvc_code" id="cvc_code" min="100" max="999" required
+                        style="border: 1px solid #000; border-radius: 4px; padding: 6px;">
+                </div>
+            @endif
+            <br>
+            <x-button variant="primary" type="submit">
+                Carregar Cartão
+            </x-button>
+        </form>
     </div>
 </x-layouts.main-content>
