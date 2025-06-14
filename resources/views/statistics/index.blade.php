@@ -1,8 +1,11 @@
 <x-layouts.main-content title="Statistics" heading="Statistics" subheading="User and Product Data Overview">
     <!-- Importa Chart.js via CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+@can('admin')
     <div class="container mx-auto p-6 bg-white rounded shadow mt-6 text-gray-900 dark:text-gray-50 dark:bg-gray-900">
+
+
+
 
         <div class="grid md:grid-cols-2 gap-6">
             <div>
@@ -30,7 +33,10 @@
                 <h3 class="text-lg font-semibold mb-2">Revenue by Month</h3>
                 <canvas id="purchaseChart"></canvas>
             </div>
-        </div>
+
+
+       </div>
+       @endcan
         <div class="mt-10">
     <h2 class="text-xl font-semibold mb-4">My Personal Statistics</h2>
 
@@ -47,8 +53,8 @@
             <ul class="list-disc ml-4">
                 @forelse ($orders->take(5) as $order)
                     <li>
-                        <strong>#{{ $order->id }}</strong> - 
-                        {{ $order->date->format('d/m/Y') }} - 
+                        <strong>#{{ $order->id }}</strong> -
+                        {{ $order->date->format('d/m/Y') }} -
                         {{ number_format($order->total, 2) }} €
                     </li>
                 @empty
