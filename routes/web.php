@@ -31,8 +31,7 @@ Route::view('dashboard', 'dashboard')
 
 Route::resource('products', ProductController::class);
 
-// CART Related Routes
-// Show the cart:
+
 Route::get('cart', [CartController::class, 'show'])->name('cart.show');
 
 
@@ -43,7 +42,7 @@ Route::delete('cart/{product}', [CartController::class, 'removeFromCart'])->name
 
 
 Route::put('cart/{product}', [CartController::class, 'updateCart'])->name('cart.update');
-
+//rotas autenticado
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
@@ -52,10 +51,15 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
     Route::get('/membership_fees', [MembershipFeeController::class, 'edit'])->name('membership_fees.edit');
     Route::get('/my-card-operations', [OperationController::class, 'myCardOperations'])->name('operations.mycard');
+    Route::get('/mycard', [CardController::class, 'mycard'])->middleware(['auth'])->name('cards.mycard');
+    Route::post('/mycard/charge', [CardController::class, 'charge'])->name('cards.charge')->middleware('auth');
+    Route::get('/statistics', [StatisticsController::class, 'index'])
+    ->name('statistics.index')
+    ->middleware('auth');
 });
-
+//rotas autenticado e veridifcado
 Route::middleware('auth', 'verified')->group(function () {
-
+//apenas admin e employee
 Route::middleware('can:employee')->group(function () {
 Route::resource('users', UserController::class);
 Route::resource('cards', CardController::class);
@@ -64,7 +68,7 @@ Route::resource('supply_orders', SupplyOrderController::class);
 Route::patch('/supply-orders/{supplyOrder}/status', [SupplyOrderController::class, 'updateStatus'])->name('supply_orders.updateStatus');
 Route::resource('operations', OperationController::class);
 });
-
+//apenas admin
 Route::middleware('can:admin')->group(function () {
 Route::put('/membership_fees', [MembershipFeeController::class, 'update'])->name('membership_fees.update');
 Route::resource('shipping_costs', ShippingCostController::class);
@@ -72,10 +76,10 @@ Route::resource('shipping_costs', ShippingCostController::class);
 
 
 });
-
+//mais rotas auth verified
 Route::post('cart', [CartController::class, 'confirm'])->name('cart.confirm');
 
-// Clear the cart:
+
 Route::delete('cart', [CartController::class, 'destroy'])->name('cart.destroy');
 
 
@@ -90,13 +94,7 @@ Route::resource('categories', CategorieController::class)->parameters([
 
 });
 
-Route::get('/mycard', [CardController::class, 'mycard'])->middleware(['auth'])->name('cards.mycard');
-
-Route::post('/mycard/charge', [CardController::class, 'charge'])->name('cards.charge')->middleware('auth');
-
-require __DIR__.'/auth.php';
-
-
+//mais rotas autenticado
 Route::middleware(['auth'])->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::post('/orders/{order}/complete', [OrderController::class, 'complete'])->name('orders.complete');
@@ -105,6 +103,5 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
-Route::get('/statistics', [StatisticsController::class, 'index'])
-    ->name('statistics.index')
-    ->middleware('auth');
+
+require __DIR__.'/auth.php';
