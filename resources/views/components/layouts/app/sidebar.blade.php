@@ -25,11 +25,11 @@
                 <flux:navlist.item icon="tag" :href="route('products.index')"
                     :current="request()->routeIs('products.index')"
                     wire:navigate>Products</flux:navlist.item>
-@auth
+                @auth
                 <flux:navlist.item icon="tag" :href="route('categories.index')"
                     :current="request()->routeIs('categories.index')"
                     wire:navigate>Categories</flux:navlist.item>
-@can('employee')
+                @can('employee')
 
                 <flux:navlist.item icon="tag" :href="route('stock_adjustments.index')"
                     :current="request()->routeIs('stock_adjustments.index')"
@@ -38,8 +38,8 @@
                 <flux:navlist.item icon="tag" :href="route('supply_orders.index')"
                     :current="request()->routeIs('supply_orders.index')"
                     wire:navigate>Supply orders</flux:navlist.item>
-@endcan
-@can('admin')
+                @endcan
+                @can('admin')
 
                 <flux:navlist.item icon="tag" :href="route('membership_fees.edit')"
                     :current="request()->routeIs('membership_fees.edit')"
@@ -48,26 +48,26 @@
                 <flux:navlist.item icon="tag" :href="route('shipping_costs.index')"
                     :current="request()->routeIs('shipping_costs.index')"
                     wire:navigate>Shipping Costs</flux:navlist.item>
-@endcan
-@can('employee')
-                    <flux:navlist.item icon="tag" :href="route('users.index')"
-                        :current="request()->routeIs('users.index')"
-                        wire:navigate>Users</flux:navlist.item>
+                @endcan
+                @can('employee')
+                <flux:navlist.item icon="tag" :href="route('users.index')"
+                    :current="request()->routeIs('users.index')"
+                    wire:navigate>Users</flux:navlist.item>
 
                 <flux:navlist.item icon="tag" :href="route('cards.index')"
-                        :current="request()->routeIs('cards.index')"
-                        wire:navigate>Cards</flux:navlist.item>
+                    :current="request()->routeIs('cards.index')"
+                    wire:navigate>Cards</flux:navlist.item>
 
                 <flux:navlist.item icon="tag" :href="route('operations.index')"
                     :current="request()->routeIs('operations.index')"
                     wire:navigate>Operations</flux:navlist.item>
-@endcan
+                @endcan
 
                 <flux:navlist.item icon="tag" :href="route('cards.mycard')"
                     :current="request()->routeIs('cards.mycard')"
                     wire:navigate>Card</flux:navlist.item>
 
-                 <flux:navlist.item icon="tag" :href="route('operations.mycard')"
+                <flux:navlist.item icon="tag" :href="route('operations.mycard')"
                     :current="request()->routeIs('operations.mycard')"
                     wire:navigate>MyOperations</flux:navlist.item>
 
@@ -83,8 +83,12 @@
             
 
 
+                <flux:navlist.item icon="chart-bar" :href="route('statistics.index')" :current="request()->routeIs('statistics.index')" wire:navigate>
+                    Statistics
+                </flux:navlist.item>
 
-                </flux:navlist.group>
+
+            </flux:navlist.group>
 
 
 
@@ -92,9 +96,9 @@
 
         </flux:navlist>
 
-@endauth
+        @endauth
         <flux:spacer />
-<!--
+        <!--
         <flux:navlist variant="outline">
             <flux:navlist.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
                 {{ __('Repository') }}
@@ -105,7 +109,7 @@
             </flux:navlist.item>
         </flux:navlist>
     -->
-@auth
+        @auth
         <!-- Desktop User Menu -->
         <flux:dropdown position="bottom" align="start">
             <flux:profile
@@ -149,7 +153,7 @@
             </flux:menu>
         </flux:dropdown>
     </flux:sidebar>
-@endauth
+    @endauth
     <!-- Mobile User Menu -->
     <flux:header class="lg:hidden">
         <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
@@ -199,7 +203,7 @@
     </flux:header>
 
     {{ $slot }}
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @fluxScripts
 </body>
 

@@ -50,8 +50,8 @@
                                     <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->gender }}</td>
                                     <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->photo }}</td>
                                     <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->nif }}</td>
-                                    <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->nif }}</td>
                                     <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->default_delivery_address }}</td>
+                                    <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->default_payment_type }}</td>
                                     <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->default_payment_reference }}</td>
                                     <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->email_verified_at }}</td>
                                     <td class="ps-2 px-0.5">
