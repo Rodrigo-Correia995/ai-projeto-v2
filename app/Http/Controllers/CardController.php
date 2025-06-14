@@ -77,14 +77,15 @@ class CardController extends Controller
 
     return view('cards.mycard', compact('card'));
 }
-
+//funcao utilizada para carregar o cartao
 public function charge(Request $request): RedirectResponse
 {
+    //recebe do fomulario 1 ou 2 variaveis
     $request->validate([
         'amount' => 'required|numeric|min:0.01',
         'cvc_code' => 'nullable|digits:3'
     ]);
-
+    //retira os dados de quem está logado
     $user = Auth::user();
     $card = $user->cardRef;
 
@@ -92,22 +93,22 @@ public function charge(Request $request): RedirectResponse
     $data = $user->default_payment_reference;
     $cvc = $request->cvc_code;
 
-    // Validar o pagamento 
+    // valida pagamento aptraves da função payment fornecida
     $isValid = match ($method) {
         'Visa' => Payment::payWithVisa($data, $cvc),
         'PayPal' => Payment::payWithPaypal($data),
         'MB WAY' => Payment::payWithMBway($data),
         default => false,
     };
-
+    //da erro se for invalido ou não estiver predefinido
     if (!$isValid) {
         return back()->withErrors(['payment' => 'Método de pagamento inválido. Ou não predefinido']);
     }
 
-    // Atualiza balance
+    // atualiza o balance
     $card->balance += $request->amount;
     $card->save();
-
+    //cria a operação correspondente
     Operation::create([
                 'card_id'           => $card->id,
                 'type'              => 'credit',
@@ -115,7 +116,7 @@ public function charge(Request $request): RedirectResponse
                 'date'              => now(),
                 'credit_type'       => 'payment',
            ]);
-
+    //devolve mensagem cartão carregado com sucesso
     return back()->with('success', 'Cartão carregado com sucesso!');
 }
 

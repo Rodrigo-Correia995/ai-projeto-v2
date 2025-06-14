@@ -23,17 +23,17 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
        Gate::define('admin', function (User $user) {
-        // Somente utilizadores com type 'board' são administradores
+        // board são admin
         return $user->type == 'board';
     });
 
     Gate::define('employee', function (User $user) {
-        // Somente utilizadores com type 'board' são administradores
+        // board e emplyee são emplyee
         return $user->type == 'board' || $user->type == 'employee';
     });
 
      Gate::define('other', function (User $user) {
-        // Somente utilizadores com type 'board' são administradores
+        // other todos menos member
         return $user->type == 'member' || $user->type == 'board' || $user->type == 'pending_member';
     });
 
