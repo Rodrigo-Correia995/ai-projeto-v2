@@ -18,7 +18,7 @@ class Categorie extends Model
 
     public function productRef(): HasMany
     {
-        return $this->hasMany(Product::class, 'category_id', 'id');
+        return $this->hasMany(Product::class, 'category_id', 'id')->withTrashed();
     }
     public $timestamps = true;
 }

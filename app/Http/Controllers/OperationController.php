@@ -65,6 +65,7 @@ class OperationController extends Controller
         return view('operations.show')->with('operation', $operation);
     }
 
+    //função para mostrar todas as operações do user
     public function myCardOperations()
 {
     $user = Auth::user();
