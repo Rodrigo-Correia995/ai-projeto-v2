@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
 
      Gate::define('other', function (User $user) {
         // Somente utilizadores com type 'board' são administradores
-        return $user->type == 'member' || $user->type == 'bord' || $user->type == 'pending_member';
+        return $user->type == 'member' || $user->type == 'board' || $user->type == 'pending_member';
     });
 
     }
